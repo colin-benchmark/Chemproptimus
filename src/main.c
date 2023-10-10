@@ -7,7 +7,7 @@
 #define TASK_LED_STACK_SIZE (1024 / sizeof(portSTACK_TYPE))
 #define TASK_LED_STACK_PRIORITY (tskIDLE_PRIORITY)
 
-extern void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed char *pcTaskName);
+extern void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName);
 extern void vApplicationIdleHook(void);
 extern void vApplicationTickHook(void);
 extern void vApplicationMallocFailedHook(void);
@@ -16,8 +16,8 @@ extern void xPortSysTickHandler(void);
 /**
  * \brief Called if stack overflow during execution
  */
-extern void vApplicationStackOverflowHook(xTaskHandle *pxTask, signed char *pcTaskName) {
-    printf("stack overflow %x %s\r\n", pxTask, (portCHAR *)pcTaskName);
+extern void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
+    printf("stack overflow %x %s\r\n", &xTask, (portCHAR *)pcTaskName);
     /* If the parameters have been corrupted then inspect pxCurrentTCB to
 	 * identify which task has overflowed its stack.
 	 */

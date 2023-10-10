@@ -41,14 +41,49 @@ list(APPEND SOURCES
     asf/sam/utils/cmsis/samv71/source/templates/gcc/startup_samv71.c
     asf/sam/utils/cmsis/samv71/source/templates/system_samv71.c
     asf/sam/utils/syscalls/gcc/syscalls.c
-    asf/thirdparty/freertos/freertos-10.0.0/Source/croutine.c
-    asf/thirdparty/freertos/freertos-10.0.0/Source/event_groups.c
-    asf/thirdparty/freertos/freertos-10.0.0/Source/portable/GCC/ARM_CM7/r0p1/port.c
-    asf/thirdparty/freertos/freertos-10.0.0/Source/portable/MemMang/heap_3.c
-    asf/thirdparty/freertos/freertos-10.0.0/Source/list.c
-    asf/thirdparty/freertos/freertos-10.0.0/Source/queue.c
-    asf/thirdparty/freertos/freertos-10.0.0/Source/tasks.c
-    asf/thirdparty/freertos/freertos-10.0.0/Source/timers.c
+    asf/thirdparty/freertos/freertos-202212.01/Source/croutine.c
+    asf/thirdparty/freertos/freertos-202212.01/Source/event_groups.c
+    asf/thirdparty/freertos/freertos-202212.01/Source/portable/GCC/ARM_CM7/r0p1/port.c
+    asf/thirdparty/freertos/freertos-202212.01/Source/portable/MemMang/heap_4.c
+    asf/thirdparty/freertos/freertos-202212.01/Source/list.c
+    asf/thirdparty/freertos/freertos-202212.01/Source/queue.c
+    asf/thirdparty/freertos/freertos-202212.01/Source/tasks.c
+    asf/thirdparty/freertos/freertos-202212.01/Source/timers.c
+    libcsp/src/arch/freertos/csp_malloc.c
+    libcsp/src/arch/freertos/csp_queue.c
+    libcsp/src/arch/freertos/csp_semaphore.c
+    libcsp/src/arch/freertos/csp_system.c
+    libcsp/src/arch/freertos/csp_thread.c
+    libcsp/src/arch/freertos/csp_time.c
+    libcsp/src/arch/freertos/csp_clock.c
+    libcsp/src/arch/csp_system.c
+    libcsp/src/arch/csp_time.c
+    libcsp/src/crypto/csp_hmac.c
+    libcsp/src/crypto/csp_sha1.c
+    libcsp/src/crypto/csp_xtea.c
+    libcsp/src/csp_bridge.c
+    libcsp/src/csp_buffer.c
+    libcsp/src/csp_conn.c
+    libcsp/src/csp_crc32.c
+    libcsp/src/csp_debug.c
+    libcsp/src/csp_dedup.c
+    libcsp/src/csp_endian.c
+    libcsp/src/csp_iflist.c
+    libcsp/src/csp_io.c
+    libcsp/src/csp_port.c
+    libcsp/src/csp_promisc.c
+    libcsp/src/csp_qfifo.c
+    libcsp/src/csp_route.c
+    libcsp/src/csp_services.c
+    libcsp/src/csp_service_handler.c
+    libcsp/src/csp_sfp.c
+    libcsp/src/interfaces/csp_if_kiss.c
+    libcsp/src/interfaces/csp_if_lo.c
+    libcsp/src/rtable/csp_rtable_static.c
+    libcsp/src/rtable/csp_rtable.c
+    libcsp/src/transport/csp_rdp.c
+    libcsp/src/transport/csp_udp.c
+    libcsp/src/csp_init.c 
 )
 
 # Set the SOURCES variable
@@ -112,14 +147,26 @@ set(INCLUDE_DIRS
     asf/thirdparty/CMSIS/Lib
     asf/thirdparty/CMSIS/Lib/GCC
     asf/thirdparty/freertos
-    asf/thirdparty/freertos/freertos-10.0.0
-    asf/thirdparty/freertos/freertos-10.0.0/Source
-    asf/thirdparty/freertos/freertos-10.0.0/Source/include
-    asf/thirdparty/freertos/freertos-10.0.0/Source/portable
-    asf/thirdparty/freertos/freertos-10.0.0/Source/portable/GCC
-    asf/thirdparty/freertos/freertos-10.0.0/Source/portable/GCC/ARM_CM7
-    asf/thirdparty/freertos/freertos-10.0.0/Source/portable/GCC/ARM_CM7/r0p1
-    asf/thirdparty/freertos/freertos-10.0.0/Source/portable/MemMang/
+    asf/thirdparty/freertos/freertos-202212.01
+    asf/thirdparty/freertos/freertos-202212.01/Source
+    asf/thirdparty/freertos/freertos-202212.01/Source/include
+    asf/thirdparty/freertos/freertos-202212.01/Source/portable
+    asf/thirdparty/freertos/freertos-202212.01/Source/portable/GCC
+    asf/thirdparty/freertos/freertos-202212.01/Source/portable/GCC/ARM_CM7
+    asf/thirdparty/freertos/freertos-202212.01/Source/portable/GCC/ARM_CM7/r0p1
+    asf/thirdparty/freertos/freertos-202212.01/Source/portable/MemMang/
+    libcsp
+    libcsp/include
+    libcsp/include/csp
+    libcsp/include/csp/arch
+    libcsp/include/csp/drivers
+    libcsp/include/csp/interfaces
+    libcsp/src
+    libcsp/src/arch
+    libcsp/src/crypto
+    libcsp/src/interfaces
+    libcsp/src/transport
+    libcsp/src/rtable
 )
 
 include_directories(${INCLUDE_DIRS})
@@ -127,6 +174,3 @@ link_directories(${CMAKE_SOURCE_DIR}/samv71b/gcc/gcc)
 
 # Create the executable
 add_executable(${PROJECT_NAME} ${SOURCES})
-
-add_subdirectory(libcsp)  # Include libcsp
-target_link_libraries(${PROJECT_NAME} csp)  # Link against libcsp

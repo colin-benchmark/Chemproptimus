@@ -56,7 +56,7 @@
 #include <compiler.h>
 #include <status_codes.h>
 
-// From module: FreeRTOS - kernel 10.0.0
+// From module: FreeRTOS - kernel 202212.01
 #include <FreeRTOS.h>
 #include <croutine.h>
 #include <deprecated_definitions.h>

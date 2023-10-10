@@ -1,5 +1,5 @@
 # the name of the target operating system
-set(CMAKE_SYSTEM_NAME FreeRTOS)
+set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
 set(CMAKE_C_COMPILER_FORCED TRUE)
