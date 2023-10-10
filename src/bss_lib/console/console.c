@@ -15,4 +15,13 @@ void console_init(void) {
     /* Configure console UART */
     sysclk_enable_peripheral_clock(CONSOLE_UART_ID);
     stdio_serial_init(CONF_UART, &uart_serial_options);
+
+    /* Specify that stdout should not be buffered. */
+#if defined(__GNUC__)
+    setbuf(stdout, NULL);
+#else
+    /* Already the case in IAR's Normal DLIB default configuration: printf()
+	 * emits one character at a time.
+	 */
+#endif
 }

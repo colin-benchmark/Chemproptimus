@@ -110,7 +110,6 @@ set(INCLUDE_DIRS
     asf/thirdparty/CMSIS/Include
     asf/thirdparty/CMSIS/Lib
     asf/thirdparty/CMSIS/Lib/GCC
-
     asf/thirdparty/freertos
     asf/thirdparty/freertos/freertos-10.0.0
     asf/thirdparty/freertos/freertos-10.0.0/Source
@@ -120,7 +119,6 @@ set(INCLUDE_DIRS
     asf/thirdparty/freertos/freertos-10.0.0/Source/portable/GCC/ARM_CM7
     asf/thirdparty/freertos/freertos-10.0.0/Source/portable/GCC/ARM_CM7/r0p1
     asf/thirdparty/freertos/freertos-10.0.0/Source/portable/MemMang/
-    
 )
 
 include_directories(${INCLUDE_DIRS})

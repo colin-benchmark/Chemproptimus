@@ -58,7 +58,6 @@
 
 // From module: FreeRTOS - kernel 10.0.0
 #include <FreeRTOS.h>
-#include <StackMacros.h>
 #include <croutine.h>
 #include <deprecated_definitions.h>
 #include <event_groups.h>
@@ -123,4 +122,4 @@
 // From module: pio_handler support enabled
 #include <pio_handler.h>
 
-#endif // ASF_H
+#endif  // ASF_H
