@@ -6,7 +6,7 @@
  */
 
 #include <csp/csp.h>
-#include <machine/endian.h>
+#include <csp/csp_endian.h>
 
 /**
  * CSP 1.x

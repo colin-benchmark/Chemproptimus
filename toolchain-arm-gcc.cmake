@@ -41,7 +41,7 @@ set(CMAKE_EXE_LINKER_FLAGS_INIT "-T ${LINKER_SCRIPT} -Wl,-Map=Mapfile.map --spec
 #set(CMAKE_EXE_LINKER_FLAGS_RELEASE "")
 
 # Specify preprocessor definitions if needed
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-expansion-to-defined -Wno-unused-parameter")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-expansion-to-defined -Wno-unused-parameter -Werror=implicit-function-declaration")
 
 # Specify include directories
 # include_directories(${CMAKE_SOURCE_DIR}/Include)
