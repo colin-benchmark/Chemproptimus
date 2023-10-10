@@ -1,0 +1,11 @@
+*.o
+*.bin
+*.eep
+*.elf
+*.hex
+*.lss
+*.map
+*.d
+.vscode/
+_junk/
+build/
