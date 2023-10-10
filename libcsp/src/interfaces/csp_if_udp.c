@@ -8,7 +8,7 @@
 #include <netdb.h>
 
 #include <csp/csp.h>
-#include <endian.h>
+#include <machine/endian.h>
 #include <csp/csp_interface.h>
 #include <csp/csp_id.h>
 

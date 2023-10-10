@@ -9,6 +9,7 @@ add_compile_definitions(
     scanf=iscanf
     ARM_MATH_CM7=true
     printf=iprintf
+    CSP_FREERTOS
 )
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

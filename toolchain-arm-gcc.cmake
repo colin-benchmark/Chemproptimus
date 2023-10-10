@@ -1,5 +1,5 @@
 # the name of the target operating system
-set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_NAME FreeRTOS)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
 set(CMAKE_C_COMPILER_FORCED TRUE)
@@ -41,7 +41,7 @@ set(CMAKE_EXE_LINKER_FLAGS_INIT "-T ${LINKER_SCRIPT} -Wl,-Map=Mapfile.map --spec
 #set(CMAKE_EXE_LINKER_FLAGS_RELEASE "")
 
 # Specify preprocessor definitions if needed
-# set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEFINITION1 -DDEFINITION2")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-expansion-to-defined -Wno-unused-parameter")
 
 # Specify include directories
 # include_directories(${CMAKE_SOURCE_DIR}/Include)
