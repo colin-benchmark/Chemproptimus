@@ -127,5 +127,5 @@ link_directories(${CMAKE_SOURCE_DIR}/samv71b/gcc/gcc)
 # Create the executable
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# add_subdirectory(libcsp)  # Include libcsp
-# target_link_libraries(${PROJECT_NAME} csp)  # Link against libcsp
+add_subdirectory(libcsp)  # Include libcsp
+target_link_libraries(${PROJECT_NAME} csp)  # Link against libcsp
