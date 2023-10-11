@@ -3,8 +3,6 @@
 #ifndef UART_CSP_H
 #define UART_CSP_H
 
-
-
 /* Port for UART Comms */
 #define UART_CSP_PORT UART3
 
@@ -21,13 +19,13 @@
 /* Configuration for comms uart */
 
 /* Configuration for comms uart IRQ handler */
-#define uart_comms_irq_handler UART3_Handler
+#define uart_csp_irq_handler UART3_Handler
 #define UART_CSP_IRQ UART3_IRQn
 
 /* Comms Settings */
 #define COMMS_UART_BAUD (115200UL)
 #define COMMS_UART_MODE UART_MR_PAR_NO
 
-void uart_ex(void);
+void uart_csp_init(void);
 
 #endif

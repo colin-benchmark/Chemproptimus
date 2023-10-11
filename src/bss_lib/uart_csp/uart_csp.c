@@ -1,16 +1,24 @@
-#include "uart_csp/uart_csp.h"
-#include "config/conf_csp.h"
-#include "led/led.h"
 #include <asf.h>
 #include <csp/csp.h>
+#include <csp/drivers/usart.h>
+
+#include "config/conf_csp.h"
+#include "led/led.h"
+#include "uart_csp/uart_csp.h"
 
 #define UART_BUFFER_SIZE 64
+#define TASK_RX_MONITOR_STACK_SIZE (2048 / sizeof(portSTACK_TYPE))
+#define TASK_RX_MONITOR_STACK_PRIORITY (tskIDLE_PRIORITY)
 
 volatile uint8_t uart_rx_buffer[UART_BUFFER_SIZE];
 volatile uint32_t uart_rx_head = 0;
 volatile uint32_t uart_rx_tail = 0;
 
-static void uart_csp_configure(void) {
+const char *kiss_device = NULL;
+csp_usart_callback_t uart_csp_rx_callback = NULL;
+void *uart_csp_user_data = NULL;
+
+static void uart_csp_hw_configure(void) {
     /* Enable the Comms UART peripheral clock */
     pmc_enable_periph_clk(UART_CSP_PERIPHERAL_ID);
 
@@ -39,6 +47,123 @@ static void uart_csp_configure(void) {
     }
 }
 
+int csp_usart_open(
+    const csp_usart_conf_t *conf, csp_usart_callback_t rx_callback, void *user_data, csp_usart_fd_t *return_fd
+) {
+    /* Hardware should get configured based on data passed in via conf however
+     * for brevity the UART HW configuration is hardcoded via uart_csp_hw_configure
+     * TODO: Update uart_csp_hw_configure to use the settings in conf
+     */
+    uart_csp_hw_configure();
+    uart_csp_rx_callback = rx_callback;
+    uart_csp_user_data = user_data;
+    return CSP_ERR_NONE;
+}
+
+int csp_usart_write(csp_usart_fd_t fd, const void *data, size_t data_length) {
+    size_t i;
+    const uint8_t *byte_data = (const uint8_t *)data;
+
+    for (i = 0; i < data_length; i++) {
+        uart_write(UART_CSP_PORT, byte_data[i]);
+    }
+    return CSP_ERR_TX;  // best matching CSP error code.
+}
+
+static void uart_csp_buffer_push(uint8_t value) {
+    uint32_t next_head = (uart_rx_head + 1) % UART_BUFFER_SIZE;
+
+    if (next_head != uart_rx_tail) {
+        uart_rx_buffer[uart_rx_head] = value;
+        uart_rx_head = next_head;
+    } else {
+        /* TODO: Handle buffer overflow error */
+    }
+}
+
+static bool uart_csp_buffer_pop(uint8_t *value) {
+    bool popped = false;
+
+    if (uart_rx_tail != uart_rx_head) {
+        *value = uart_rx_buffer[uart_rx_tail];
+        uart_rx_tail = (uart_rx_tail + 1) % UART_BUFFER_SIZE;
+        popped = true;
+    }
+
+    return popped;
+}
+
+static uint8_t uart_csp_buffer_len() {
+    uint8_t diff = 0;
+
+    if (uart_rx_tail > uart_rx_head) {
+        diff = uart_rx_tail - uart_rx_head;
+    } else {
+        diff = uart_rx_head - uart_rx_tail;
+    }
+
+    return diff;
+}
+
+static void uart_csp_lib_configure() {
+    /* Init CSP with address and default settings */
+    csp_conf_t csp_conf;
+    csp_conf_get_defaults(&csp_conf);
+    csp_conf.address = CSP_ADDRESS;
+    int error = csp_init(&csp_conf);
+    if (error != CSP_ERR_NONE) {
+        csp_log_error("csp_init() failed, error: %d", error);
+        exit(1);
+    }
+
+    /* Start router task with 10000 bytes of stack (priority is only supported on FreeRTOS) */
+    csp_route_start_task(500, 0);
+
+    /* Add interface(s) */
+    csp_iface_t *default_iface = NULL;
+    csp_usart_conf_t conf = {
+        .device = NULL,
+        .baudrate = 115200, /* supported on all platforms */
+        .databits = 8,
+        .stopbits = 1,
+        .paritysetting = 0,
+        .checkparity = 0,
+    };
+    error = csp_usart_open_and_add_kiss_interface(&conf, CSP_IF_KISS_DEFAULT_NAME, &default_iface);
+    if (error != CSP_ERR_NONE) {
+        csp_log_error("failed to add KISS interface [%s], error: %d", kiss_device, error);
+        exit(1);
+    }
+}
+
+static void task_rx(void *pvParameters) {
+    uint8_t rx_byte = 0;
+    while (1) {
+        if (uart_csp_buffer_len()) {
+            if (uart_csp_buffer_pop(&rx_byte)) {
+                uart_csp_rx_callback(uart_csp_user_data, &rx_byte, 1, NULL);
+            }
+        }
+        vTaskDelay(100);
+    }
+}
+
+void uart_csp_init(void) {
+    csp_debug_set_level(CSP_INFO, true);
+
+    csp_log_info("Loading UART-CSP component");
+    uart_csp_hw_configure();
+
+    csp_log_info("Initializing CSP library");
+    uart_csp_lib_configure();
+
+    csp_log_info("Launching RX Monitor task");
+    if (xTaskCreate(task_rx, "RX Monitor", TASK_RX_MONITOR_STACK_SIZE, NULL, TASK_RX_MONITOR_STACK_PRIORITY, NULL)
+        != pdPASS) {
+        printf("Failed to create RX Monitor task\r\n");
+    }
+}
+
 void uart_csp_irq_handler(void) {
     uint32_t status = uart_get_status(UART_CSP_PORT);
 
@@ -46,31 +171,9 @@ void uart_csp_irq_handler(void) {
         uint8_t received_byte;
         uint32_t rx_status = uart_read(UART_CSP_PORT, &received_byte);
         if (!rx_status) {
-            uint32_t next_head = (uart_rx_head + 1) % UART_BUFFER_SIZE;
-
-            if (next_head != uart_rx_tail) {
-                uart_rx_buffer[uart_rx_head] = received_byte;
-                uart_rx_head = next_head;
-            } else {
-                /* TODO: Handle buffer overflow error */
-            }
+            uart_csp_buffer_push(received_byte);
         } else {
             /* I/O Failure, UART is not ready */
         }
-    }
-}
-
-void uart_csp_init(void) {
-    uart_csp_configure();
-
-    while (1) {
-        if (uart_rx_tail != uart_rx_head) {
-            uint8_t received_byte = uart_rx_buffer[uart_rx_tail];
-            uart_write(UART_CSP_PORT, received_byte);
-            uart_rx_tail = (uart_rx_tail + 1) % UART_BUFFER_SIZE;
-        } else {
-            // delay_ms(500);
-        }
-        led0_toggle();
     }
 }

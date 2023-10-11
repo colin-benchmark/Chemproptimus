@@ -16,6 +16,7 @@
 /* #undef CSP_USE_PROMISC */
 /* #undef CSP_USE_QOS */
 #define CSP_RDP_MAX_WINDOW 20
+#define CSP_PADDING_BYTES 10
 #define CSP_LOG_LEVEL_DEBUG 1
 #define CSP_LOG_LEVEL_INFO 1
 #define CSP_LOG_LEVEL_WARN 1

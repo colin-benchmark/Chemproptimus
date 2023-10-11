@@ -1,5 +1,6 @@
 #include "conf_board.h"
 #include "console/console.h"
+#include "uart_csp/uart_csp.h"
 #include <asf.h>
 
 #define TASK_MONITOR_STACK_SIZE (2048 / sizeof(portSTACK_TYPE))
@@ -47,42 +48,6 @@ extern void vApplicationMallocFailedHook(void) {
     configASSERT((volatile void *)NULL);
 }
 
-/**
- * \brief This task, when activated, send every ten seconds on debug UART
- * the whole report of free heap and total tasks status
- */
-static void task_monitor(void *pvParameters) {
-    static portCHAR szList[256];
-    UNUSED(pvParameters);
-
-    for (;;) {
-        printf("--- task ## %u", (unsigned int)uxTaskGetNumberOfTasks());
-        vTaskList((signed portCHAR *)szList);
-        printf(szList);
-        vTaskDelay(1000);
-    }
-}
-
-/**
- * \brief This task, when activated, make LED blink at a fixed rate
- */
-static void task_led(void *pvParameters) {
-    UNUSED(pvParameters);
-    for (;;) {
-#if SAM4CM
-        LED_Toggle(LED4);
-#else
-        LED_Toggle(LED0);
-#endif
-        vTaskDelay(1000);
-    }
-}
-
-/**
- *  \brief FreeRTOS Real Time Kernel example entry point.
- *
- *  \return Unused (ANSI-C compatibility).
- */
 int main(void) {
     /* Initialize the SAM system */
     sysclk_init();
@@ -91,21 +56,10 @@ int main(void) {
     /* Initialize the console uart */
     console_init();
 
+    printf("-- Xantus - FreeRTOS --\n\r");
+
     /* Output demo information. */
-    printf("-- Freertos Example --\n\r");
-    printf("-- %s\n\r", BOARD_NAME);
-    printf("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
-
-    /* Create task to monitor processor activity */
-    if (xTaskCreate(task_monitor, "Monitor", TASK_MONITOR_STACK_SIZE, NULL, TASK_MONITOR_STACK_PRIORITY, NULL)
-        != pdPASS) {
-        printf("Failed to create Monitor task\r\n");
-    }
-
-    /* Create task to make led blink */
-    if (xTaskCreate(task_led, "Led", TASK_LED_STACK_SIZE, NULL, TASK_LED_STACK_PRIORITY, NULL) != pdPASS) {
-        printf("Failed to create test led task\r\n");
-    }
+    uart_csp_init();
 
     /* Start the scheduler. */
     vTaskStartScheduler();

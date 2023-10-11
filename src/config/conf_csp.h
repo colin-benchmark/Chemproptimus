@@ -11,6 +11,13 @@
 #define GIT_REV ""
 #define CSP_FREERTOS 1
 #define FREERTOS_VERSION_NR 8
+/* #undef CSP_USE_RDP */
+/* #undef CSP_USE_HMAC */
+/* #undef CSP_USE_XTEA */
+/* #undef CSP_USE_PROMISC */
+/* #undef CSP_USE_QOS */
+/* #undef CSP_BIG_ENDIAN */
+#define CSP_USE_DEBUG_COLOR 0
 /* #undef CSP_POSIX */
 /* #undef CSP_WINDOWS */
 /* #undef CSP_MACOSX */
@@ -38,5 +45,5 @@
 /* #undef CSP_BIG_ENDIAN */
 #define CSP_HAVE_STDBOOL_H 1
 
-#define MY_ADDR OBC_ADDR
+#define CSP_ADDRESS 0x10
 #endif /* CONF_CSP_H_ */

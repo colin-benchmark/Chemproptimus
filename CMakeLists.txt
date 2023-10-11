@@ -83,6 +83,7 @@ list(APPEND SOURCES
     libcsp/src/rtable/csp_rtable.c
     libcsp/src/transport/csp_rdp.c
     libcsp/src/transport/csp_udp.c
+    libcsp/src/drivers/usart/usart_kiss.c
     libcsp/src/csp_init.c 
 )
 
