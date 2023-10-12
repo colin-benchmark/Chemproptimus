@@ -4,22 +4,23 @@
 #define CSP_ADDRESS 0x10
 
 #define CSP_FREERTOS 1
+// #define CSP_DEBUG_TIMESTAMP 1
 #define CSP_DEBUG 1
-#define CSP_VERBOSE 1
-#define CSP_USE_CRC32 1
 #define CSP_USE_RDP 1
-#define CSP_CONN_MAX 3
-#define CSP_RDP_MAX_WINDOW 20
-#define CSP_CONN_QUEUE_LENGTH 100
-#define CSP_PADDING_BYTES 10
-#define CSP_FIFO_INPUT 30
+// #define CSP_USE_RDP_FAST_CLOSE 1
+#define CSP_USE_CRC32 1
+// #define CSP_USE_HMAC 1
+// #define CSP_USE_XTEA 1
+// #define CSP_USE_PROMISC 1
+// #define CSP_USE_QOS 1
+// #define CSP_USE_DEDUP 1
+// #define CSP_USE_EXTERNAL_DEBUG 1
 #define CSP_LOG_LEVEL_DEBUG 1
 #define CSP_LOG_LEVEL_INFO 1
 #define CSP_LOG_LEVEL_WARN 1
 #define CSP_LOG_LEVEL_ERROR 1
 #define CSP_LITTLE_ENDIAN 1
-#define CSP_MAX_BIND_PORT 31
-#define CSP_HAVE_STDBOOL_H 1
-#define CSP_USE_DEBUG_COLOR 0
+
+#define LIBCSP_VERSION '1.6'
 
 #endif /* CONF_CSP_H_ */
