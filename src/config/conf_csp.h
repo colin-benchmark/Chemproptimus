@@ -2,6 +2,7 @@
 #define CONF_CSP_H_
 
 #define CSP_ADDRESS 0x10
+#define CSP_PRIMARY_PORT 0x0A
 
 #define CSP_FREERTOS 1
 // #define CSP_DEBUG_TIMESTAMP 1
@@ -20,6 +21,8 @@
 #define CSP_LOG_LEVEL_WARN 1
 #define CSP_LOG_LEVEL_ERROR 1
 #define CSP_LITTLE_ENDIAN 1
+
+#define CSP_RX_TIMEOUT 50
 
 #define LIBCSP_VERSION '1.6'
 

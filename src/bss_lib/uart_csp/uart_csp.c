@@ -1,4 +1,5 @@
 #include <asf.h>
+#include <csp/arch/csp_system.h>
 #include <csp/csp.h>
 #include <csp/drivers/usart.h>
 
@@ -20,6 +21,7 @@ volatile uint32_t uart_rx_tail = 0;
 const char *kiss_device = NULL;
 csp_usart_callback_t uart_csp_rx_callback = NULL;
 void *uart_csp_user_data = NULL;
+static int csp_sys_reboot_uart_csp(void);
 
 /***********************************************************
  * Config Steps
@@ -85,6 +87,8 @@ static void uart_csp_lib_configure() {
     }
 
     csp_rtable_set(CSP_DEFAULT_ROUTE, 0, default_iface, CSP_NO_VIA_ADDRESS);
+
+    csp_sys_set_reboot(csp_sys_reboot_uart_csp);
 }
 
 /***********************************************************
@@ -168,6 +172,10 @@ int csp_usart_write(csp_usart_fd_t fd, const void *data, size_t data_length) {
     return return_val;
 }
 
+static int csp_sys_reboot_uart_csp(void) {
+    csp_log_info("SERVICE: Reboot requested");
+}
+
 /***********************************************************
  * Tasks
  ***********************************************************/
@@ -207,9 +215,12 @@ static void uart_csp_task_server(void *pvParameters) {
 
         /* Read packets on connection, timout is 100 mS */
         csp_packet_t *packet;
-        while ((packet = csp_read(conn, 50)) != NULL) {
-            switch (csp_conn_dport(conn)) {
-                case 0x21:
+        while ((packet = csp_read(conn, CSP_RX_TIMEOUT)) != NULL) {
+            int port = csp_conn_dport(conn);
+            csp_log_info("Request made to port: %d", port);
+
+            switch (port) {
+                case CSP_PRIMARY_PORT:
                     /* Process packet here */
                     csp_log_info("Packet received on MY_SERVER_PORT: %s", (char *)packet->data);
                     csp_buffer_free(packet);
