@@ -155,11 +155,12 @@ int csp_usart_write(csp_usart_fd_t fd, const void *data, size_t data_length) {
     const uint8_t *byte_data = (const uint8_t *)data;
 
     for (i = 0; i < data_length; i++) {
+        int tx_byte = byte_data[i];
         while (!uart_is_tx_ready(UART_CSP_PORT)) {
             /* NOP: Wait till the transmitter is clear */
         }
 
-        if (!uart_write(UART_CSP_PORT, byte_data[i])) {
+        if (!uart_write(UART_CSP_PORT, tx_byte)) {
             /* write success */
             return_val++; /* record how many bytes get written */
         } else {
