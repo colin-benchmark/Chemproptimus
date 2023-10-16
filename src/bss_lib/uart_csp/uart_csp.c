@@ -223,8 +223,16 @@ static void uart_csp_task_server(void *pvParameters) {
             switch (port) {
                 case CSP_PRIMARY_PORT:
                     /* Process packet here */
-                    csp_log_info("Packet received on MY_SERVER_PORT: %s", (char *)packet->data);
-                    csp_buffer_free(packet);
+                    if (packet != NULL) {
+                        csp_log_info("Packet received on MY_SERVER_PORT: ");
+                        for (size_t i = 0; i < packet->length; i++) {
+                            printf("%02x ", packet->data[i]);
+                        }
+                        printf("\n");
+                        if (!csp_send(conn, packet, 0)) {
+                            csp_buffer_free(packet);
+                        }
+                    }
                     break;
 
                 default:
