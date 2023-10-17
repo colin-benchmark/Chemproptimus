@@ -8,5 +8,5 @@
  *********************************************************/
 
 eeprom_attributes eeprom_inst = {
-        .codework = 0
+    .codework = 0
 };

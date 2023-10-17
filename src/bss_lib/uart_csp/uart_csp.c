@@ -220,7 +220,9 @@ static void uart_csp_task_server(void *pvParameters) {
         csp_packet_t *rx_packet;
         while ((rx_packet = csp_read(conn, CSP_RX_TIMEOUT)) != NULL) {
             int port = csp_conn_dport(conn);
+#if 0
             csp_log_info("Request made to port: %d", port);
+#endif
 
             switch (port) {
                 case CSP_PRIMARY_PORT:

@@ -8,13 +8,13 @@
  *********************************************************/
 
 firing_attributes firing_inst = {
-        .inductor_charge_time = 0,
-        .firing_pattern = 0,
-        .capacitor_charge_time = 0,
-        .shots_remaining = 0,
-        .cycles_remaining = 0,
-        .target_power = 0,
-        .firing_mode = 0,
-        .enabled = 0,
-        .safety_override = 0
+    .inductor_charge_time = {50, 50, 50, 50},
+    .firing_pattern = 0,
+    .capacitor_charge_time = 50,
+    .shots_remaining = 0,
+    .cycles_remaining = 0,
+    .target_power = 0,
+    .firing_mode = 0,
+    .enabled = false,
+    .safety_override = false
 };

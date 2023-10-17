@@ -1,5 +1,3 @@
-
-/* Component Libraries */
 #include "packet_processor.h"
 #include "component_processor/component_processor.h"
 #include "packet.h"

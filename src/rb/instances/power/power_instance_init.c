@@ -8,9 +8,9 @@
  *********************************************************/
 
 power_attributes power_inst = {
-        .ppu_status = 0,
-        .ppu_frequency = 0,
-        .ppu_duty_cycle = 0,
-        .buckboost_status = 0,
-        .current_limit = 0
+    .ppu_status = false,
+    .ppu_frequency = 1000,
+    .ppu_duty_cycle = 50,
+    .buckboost_status = false,
+    .current_limit = 0
 };

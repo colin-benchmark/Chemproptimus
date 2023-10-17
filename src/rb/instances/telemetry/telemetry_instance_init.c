@@ -8,7 +8,7 @@
  *********************************************************/
 
 telemetry_attributes telemetry_inst = {
-        .temperature = 0,
-        .capacitor_voltage = 0,
-        .shots = 0
+    .temperature = 0,
+    .capacitor_voltage = 0,
+    .shots = 0
 };
