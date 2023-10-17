@@ -3,6 +3,6 @@
 
 /* Status base cannot be 0 for any entry as this will cause
  * conflicts with the generic status_t codes */
-#define COMMS_STATUS_BASE 0x0100
+#define STATUS_COMMS_BASE 0x0100
 
 #endif

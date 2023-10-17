@@ -1,5 +1,8 @@
+#include "component_processor/component_processor.h"
 #include "conf_board.h"
 #include "console/console.h"
+#include "packet_processor/packet_processor.h"
+#include "rb/component_handlers.h"
 #include "uart_csp/uart_csp.h"
 #include <asf.h>
 
@@ -13,6 +16,9 @@ extern void vApplicationIdleHook(void);
 extern void vApplicationTickHook(void);
 extern void vApplicationMallocFailedHook(void);
 extern void xPortSysTickHandler(void);
+
+/* Import Components */
+ComponentProcessor component_processor[] = COMPONENT_PROCESSOR_INIT;
 
 /**
  * \brief Called if stack overflow during execution
@@ -60,6 +66,10 @@ int main(void) {
 
     /* Output demo information. */
     uart_csp_init();
+
+    /* Launch the BSS framework */
+    packet_processor_init();
+    component_processor_init(component_processor, sizeof(component_processor) / sizeof(component_processor[0]));
 
     /* Start the scheduler. */
     vTaskStartScheduler();

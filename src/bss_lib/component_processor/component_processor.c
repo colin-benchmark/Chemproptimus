@@ -1,9 +1,8 @@
 #include "component_processor.h"
-#include "comms_status.h"
-#include "device_registers.h"
-#include "null.h"
 #include "packet_processor/packet.h"
 #include "status.h"
+#include <assert.h>
+#include <stddef.h>
 #include <stdint.h>
 
 static ComponentProcessor *processors;
@@ -36,11 +35,9 @@ status_t component_read_single_attrb(
     *bytes_written = 0;
 
     if (processor != NULL && processor->read_handler != NULL) {
-        status = processor->read_handler(
-            processor->component_n, attribute_id, first_row, last_row, output, output_len, bytes_written
-        );
+        status = processor->read_handler(attribute_id, first_row, last_row, output, output_len, bytes_written);
     } else {
-        status = COMMS_STATUS_INVALID_INSTANCE_ID;
+        status = STATUS_COMMS_INVALID_INSTANCE_ID;
     }
 
     return status;
@@ -88,9 +85,9 @@ status_t component_write_single_attrb(
     status_t status = STATUS_UNSUPPORTED;
 
     if (processor != NULL && processor->write_handler != NULL) {
-        status = processor->write_handler(processor->component_n, attribute_id, first_row, last_row, input, input_len);
+        status = processor->write_handler(attribute_id, first_row, last_row, input, input_len);
     } else {
-        status = COMMS_STATUS_INVALID_INSTANCE_ID;
+        status = STATUS_COMMS_INVALID_INSTANCE_ID;
     }
 
     return status;
@@ -101,9 +98,9 @@ status_t component_call_method(uint8_t component_id, uint8_t method_id, uint8_t 
     status_t status = STATUS_UNSUPPORTED;
 
     if (processor != NULL && processor->method_handler != NULL) {
-        status = processor->method_handler(processor->component_n, method_id, input, input_len);
+        status = processor->method_handler(method_id, input, input_len);
     } else {
-        status = COMMS_STATUS_INVALID_INSTANCE_ID;
+        status = STATUS_COMMS_INVALID_INSTANCE_ID;
     }
 
     return status;
@@ -115,6 +112,6 @@ void component_processor_init(ComponentProcessor *component_processors, uint8_t 
         processors_len = n_processors;
     } else {
         /* bad data when initialising the attribute processor */
-        DEV_ASSERT(0);
+        assert(0);
     }
 }

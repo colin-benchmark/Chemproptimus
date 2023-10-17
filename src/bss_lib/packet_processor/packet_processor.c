@@ -8,12 +8,13 @@
 #include "timers.h"
 
 /* Component Libraries */
-#include "comms_status.h"
 #include "component_processor/component_processor.h"
 #include "packet.h"
 #include "packet_processor.h"
 
+#include <assert.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -47,7 +48,7 @@ void taskPacketProcessor(void *pvParameters) {
         if (packet != NULL && xSemaphoreTake(packet_processing_mutex, PACKET_PROCESSOR_PERIOD_MS) != pdFAIL) {
             switch (packet[PACKET_BYTE_POS_TYPE]) {
                 case PACKET_TYPE_READ_SINGLETON:
-                    status = instance_read_single_attrb(
+                    status = component_read_single_attrb(
                         packet[PACKET_BYTE_POS_INSTANCE],
                         packet[PACKET_BYTE_POS_ATTRIBUTE],
                         0,
@@ -62,7 +63,7 @@ void taskPacketProcessor(void *pvParameters) {
                     first_row = ((packet[PACKET_BYTE_POS_ROW_FIRST + 1] << 8) | packet[PACKET_BYTE_POS_ROW_FIRST]);
                     last_row = ((packet[PACKET_BYTE_POS_ROW_LAST + 1] << 8) | packet[PACKET_BYTE_POS_ROW_LAST]);
 
-                    status = instance_read_single_attrb(
+                    status = component_read_single_attrb(
                         packet[PACKET_BYTE_POS_INSTANCE],
                         packet[PACKET_BYTE_POS_ATTRIBUTE],
                         first_row,
@@ -74,7 +75,7 @@ void taskPacketProcessor(void *pvParameters) {
                     break;
 
                 case PACKET_TYPE_READ_MULTI_ATTRIB:
-                    status = instance_read_multiple_attrb(
+                    status = component_read_multiple_attrb(
                         packet[PACKET_BYTE_POS_INSTANCE],
                         packet[PACKET_BYTE_POS_ATTRIBUTE],
                         packet[PACKET_BYTE_POS_ATTRIBUTE_LAST],
@@ -85,13 +86,13 @@ void taskPacketProcessor(void *pvParameters) {
                     break;
 
                 case PACKET_TYPE_WRITE_SINGLETON:
-                    status = instance_write_single_attrb(
+                    status = component_write_single_attrb(
                         packet[PACKET_BYTE_POS_INSTANCE],
                         packet[PACKET_BYTE_POS_ATTRIBUTE],
                         0,
                         0,
                         &packet[PACKET_BYTE_WRITE_SINGLETON_DATA],
-                        packet[PACKET_BYTE_POS_LENGTH] - 2 /* instance and attr fields */
+                        packet[PACKET_BYTE_POS_LENGTH] - 2 /* component and attr fields */
                     );
                     break;
 
@@ -99,22 +100,22 @@ void taskPacketProcessor(void *pvParameters) {
                     first_row = ((packet[PACKET_BYTE_POS_ROW_FIRST + 1] << 8) | packet[PACKET_BYTE_POS_ROW_FIRST]);
                     last_row = ((packet[PACKET_BYTE_POS_ROW_LAST + 1] << 8) | packet[PACKET_BYTE_POS_ROW_LAST]);
 
-                    status = instance_write_single_attrb(
+                    status = component_write_single_attrb(
                         packet[PACKET_BYTE_POS_INSTANCE],
                         packet[PACKET_BYTE_POS_ATTRIBUTE],
                         first_row,
                         last_row,
                         &packet[PACKET_BYTE_WRITE_MULTI_ROW_DATA],
-                        packet[PACKET_BYTE_POS_LENGTH] - 6 /* instance, attr and 4 row fields */
+                        packet[PACKET_BYTE_POS_LENGTH] - 6 /* component, attr and 4 row fields */
                     );
                     break;
 
                 case PACKET_TYPE_EXECUTE:
-                    status = instance_call_method(
+                    status = component_call_method(
                         packet[PACKET_BYTE_POS_INSTANCE],
                         packet[PACKET_BYTE_POS_METHOD],
                         &packet[PACKET_BYTE_METHOD_DATA],
-                        packet[PACKET_BYTE_POS_LENGTH] - 2 /* instance and method fields */
+                        packet[PACKET_BYTE_POS_LENGTH] - 2 /* component and method fields */
                     );
                     break;
 
@@ -124,7 +125,7 @@ void taskPacketProcessor(void *pvParameters) {
             }
         }
 
-        comms_tx(status, tx_buffer, tx_bytes_written);
+        // TODO: comms_tx(status, tx_buffer, tx_bytes_written);
 
         xSemaphoreGive(packet_processing_mutex);
     }
@@ -136,13 +137,13 @@ void process_packet(uint8_t *packet) {
             xQueueSendToBack(packetQueue, packet, PACKET_PROCESSOR_PERIOD_MS);
         } else {
             /* Couldn't get semaphore for queue */
-            DEV_ASSERT(0);
+            assert(0);
         }
 
         xSemaphoreGive(packet_queue_mutex);
     } else {
         /* Couldn't get semaphore for packet */
-        DEV_ASSERT(0);
+        assert(0);
     }
 
     xSemaphoreGive(packet_processing_mutex);

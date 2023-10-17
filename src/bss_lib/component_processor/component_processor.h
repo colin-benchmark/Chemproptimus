@@ -6,9 +6,9 @@
 
 #define ATTRIBUTE_MAX_HANDLERS 16
 
-typedef status_t (*fn_read_handler)(uint8_t, uint8_t, uint16_t, uint16_t, uint8_t *, uint8_t, uint8_t *);
-typedef status_t (*fn_write_handler)(uint8_t, uint8_t, uint16_t, uint16_t, uint8_t *, uint8_t);
-typedef status_t (*fn_method_handler)(uint8_t, uint8_t, uint8_t *, uint8_t);
+typedef status_t (*fn_read_handler)(uint8_t, uint16_t, uint16_t, uint8_t *, uint8_t, uint8_t *);
+typedef status_t (*fn_write_handler)(uint8_t, uint16_t, uint16_t, uint8_t *, uint8_t);
+typedef status_t (*fn_method_handler)(uint8_t, uint8_t *, uint8_t);
 
 typedef struct _AttributeProcessor
 {
@@ -30,7 +30,7 @@ status_t component_read_single_attrb(
 );
 
 status_t component_read_multiple_attrb(
-    uint8_t component,
+    uint8_t component_id,
     uint8_t attribute_first,
     uint8_t attribute_last,
     uint8_t *output,

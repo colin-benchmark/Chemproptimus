@@ -1,9 +1,8 @@
-#include "comms_status.h"
 #include "status.h"
 #include "eeprom/eeprom.h"
 #include "eeprom/eeprom_attributes.h"
 #include "eeprom/eeprom_methods.h"
-#include "eeprom_instances.h"
+#include "eeprom/eeprom_instance.h"
 #include "eeprom_interface.h"
 #include <stdint.h>
 #include <string.h>
@@ -23,7 +22,7 @@ status_t eeprom_read_handler(
     uint8_t bytes_to_write = 0;
 
     if (first > last) {
-        return COMMS_STATUS_INVALID_ROWS;
+        return STATUS_COMMS_INVALID_ROWS;
     }
 
     switch (attribute_id) {
@@ -31,13 +30,13 @@ status_t eeprom_read_handler(
         case EEPROM_ATTRIBUTE_CODEWORK_ID:
             bytes_to_write = sizeof(uint32_t);
             if (bytes_to_write > output_len) {
-                return COMMS_STATUS_INSUFFICIENT_BUFFER_SPACE;
+                return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
             memcpy(output, &eeprom_inst.codework, bytes_to_write);
             break;
         
         default:
-            return COMMS_STATUS_INVALID_ATTRIB_ID;
+            return STATUS_COMMS_INVALID_ATTRIB_ID;
     }
 
     *bytes_written = bytes_to_write;
@@ -45,7 +44,6 @@ status_t eeprom_read_handler(
 }
 
 status_t eeprom_write_handler(
-    uint8_t instance_n,
     uint8_t attribute_id,
     uint16_t first,
     uint16_t last,
@@ -54,12 +52,8 @@ status_t eeprom_write_handler(
 ) {
     uint8_t bytes_to_write = 0;
 
-    if (instance_n >= EEPROM_INSTANCES_N) {
-        return COMMS_STATUS_INVALID_INSTANCE_ID;
-    }
-
     if (first > last) {
-        return COMMS_STATUS_INVALID_ROWS;
+        return STATUS_COMMS_INVALID_ROWS;
     }
 
     switch (attribute_id) {
@@ -67,29 +61,24 @@ status_t eeprom_write_handler(
         case EEPROM_ATTRIBUTE_CODEWORK_ID:
             bytes_to_write = sizeof(uint32_t);
             if (bytes_to_write != input_len) {
-                return COMMS_STATUS_INCORRECT_INPUT_DATA;
+                return STATUS_COMMS_INCORRECT_INPUT_DATA;
             }
             memcpy(&eeprom_inst.codework, input, bytes_to_write);
             break;
             
         default:
-            return COMMS_STATUS_INVALID_ATTRIB_ID;
+            return STATUS_COMMS_INVALID_ATTRIB_ID;
     }
 
     return STATUS_SUCCESS;
 }
 
 status_t eeprom_method_handler(
-    uint8_t instance_n,
     uint8_t method_id,
     uint8_t *input,
     uint8_t input_len
 ) {
     status_t status = STATUS_ERROR;
-
-    if (instance_n >= EEPROM_INSTANCES_N) {
-        return COMMS_STATUS_INVALID_INSTANCE_ID;
-    }
 
     switch (method_id) {
         
@@ -98,7 +87,7 @@ status_t eeprom_method_handler(
             break;
             
         default:
-            status = COMMS_STATUS_INVALID_METHOD_ID;
+            status = STATUS_COMMS_INVALID_METHOD_ID;
     }
 
     return status;
