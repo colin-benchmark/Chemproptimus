@@ -4,11 +4,12 @@
 typedef enum
 {
     /* Generic error codes */
-    STATUS_SUCCESS = 0x000U,     /*!< Generic operation success status */
-    STATUS_ERROR = 0x001U,       /*!< Generic operation failure status */
-    STATUS_BUSY = 0x002U,        /*!< Generic operation busy status */
-    STATUS_TIMEOUT = 0x003U,     /*!< Generic operation timeout status */
-    STATUS_UNSUPPORTED = 0x004U, /*!< Generic operation unsupported status */
+    STATUS_SUCCESS = 0x000,
+    STATUS_ERROR = 0x001,
+    STATUS_BUSY = 0x002,
+    STATUS_TIMEOUT = 0x003,
+    STATUS_UNSUPPORTED = 0x004,
+    STATUS_NOT_IMPLEMENTED = 0x005,
     STATUS_COMMS_LENGHT_ERROR = 0x0100,
     STATUS_COMMS_INVALID_TYPE = 0x0100,
     STATUS_COMMS_CRC_ERROR = 0x0100,

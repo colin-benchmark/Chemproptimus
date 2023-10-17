@@ -1,3 +1,5 @@
+#include "status.h"
+
 #ifndef DEVICE_METHODS_H
 #define DEVICE_METHODS_H
 
@@ -13,6 +15,21 @@
 #define DEVICE_METHOD_PRINT_VERISON_PARAM_BYTES (0)
 #define DEVICE_METHOD_REBOOT_PARAM_BYTES (0)
 #define DEVICE_METHOD_RECALCULATE_CHECKSUM_PARAM_BYTES (0)
+
+/**********************************************************
+ * Print device information to debug port
+ *********************************************************/
+status_t device_print_verison();
+
+/**********************************************************
+ * Reboot the device
+ *********************************************************/
+status_t device_reboot();
+
+/**********************************************************
+ * Update value in `device.checksum`
+ *********************************************************/
+status_t device_recalculate_checksum();
 
 
 #endif

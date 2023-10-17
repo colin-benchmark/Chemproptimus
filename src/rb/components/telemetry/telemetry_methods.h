@@ -1,3 +1,5 @@
+#include "status.h"
+
 #ifndef TELEMETRY_METHODS_H
 #define TELEMETRY_METHODS_H
 

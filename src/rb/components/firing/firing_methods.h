@@ -1,3 +1,5 @@
+#include "status.h"
+
 #ifndef FIRING_METHODS_H
 #define FIRING_METHODS_H
 
@@ -16,6 +18,26 @@
 
 #define FIRING_METHOD_FIRE_SHOTS_PARAM_BYTES (3)
 #define FIRING_METHOD_FIRE_CYCLES_PARAM_BYTES (2)
+
+/**********************************************************
+ * Fire a specific thruster for a number of shots
+ *
+ * thruster: Thruster to fire
+ * shots
+ *********************************************************/
+status_t firing_fire_shots(
+    uint8_t thruster,
+    uint16_t shots
+);
+
+/**********************************************************
+ * Cycle through the firing pattern defined by Firing Pattern for a number of cycles
+ *
+ * cycles
+ *********************************************************/
+status_t firing_fire_cycles(
+    uint16_t cycles
+);
 
 
 #endif

@@ -1,3 +1,5 @@
+#include "status.h"
+
 #ifndef POWER_METHODS_H
 #define POWER_METHODS_H
 
@@ -15,6 +17,24 @@
 
 #define POWER_METHOD_SET_PPU_PARAM_BYTES (1)
 #define POWER_METHOD_SET_BUCKBOOST_PARAM_BYTES (1)
+
+/**********************************************************
+ * Enable or disbale the PPU
+ *
+ * enabled: False - Disable PPU, True - Enable PPU
+ *********************************************************/
+status_t power_set_ppu(
+    bool enabled
+);
+
+/**********************************************************
+ * Enable or disbale the Buck Boost
+ *
+ * enabled: False - Disable PPU, True - Enable PPU
+ *********************************************************/
+status_t power_set_buckboost(
+    bool enabled
+);
 
 
 #endif
