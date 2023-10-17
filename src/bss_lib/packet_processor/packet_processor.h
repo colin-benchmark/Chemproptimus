@@ -4,6 +4,6 @@
 #define PACKET_PROCESSOR_H
 
 void packet_processor_init();
-void process_packet(uint8_t *packet);
+uint8_t process_packet(uint8_t *packet, uint16_t packet_len, uint8_t *tx_buffer);
 
 #endif

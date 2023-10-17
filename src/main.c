@@ -64,12 +64,11 @@ int main(void) {
 
     printf("-- Xantus - FreeRTOS --\n\r");
 
-    /* Output demo information. */
-    uart_csp_init();
-
     /* Launch the BSS framework */
-    packet_processor_init();
     component_processor_init(component_processor, sizeof(component_processor) / sizeof(component_processor[0]));
+
+    /* Enable comms */
+    uart_csp_init();
 
     /* Start the scheduler. */
     vTaskStartScheduler();

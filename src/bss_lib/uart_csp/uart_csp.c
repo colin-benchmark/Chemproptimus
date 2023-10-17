@@ -5,7 +5,10 @@
 
 #include "config/conf_csp.h"
 #include "led/led.h"
+#include "packet_processor/packet_processor.h"
 #include "uart_csp/uart_csp.h"
+
+#include <assert.h>
 
 #define UART_BUFFER_SIZE 512
 #define PACKET_RX_PERIOD_MS (5 / portTICK_PERIOD_MS)
@@ -204,7 +207,6 @@ static void uart_csp_task_server(void *pvParameters) {
 
     /* Create a backlog of 10 connections, i.e. up to 10 new connections can be queued */
     csp_listen(sock, 10);
-
     /* Wait for connections and then process packets on the connection */
     while (1) {
         /* Wait for a new connection, 10000 mS timeout */
@@ -215,29 +217,44 @@ static void uart_csp_task_server(void *pvParameters) {
         }
 
         /* Read packets on connection, timout is 100 mS */
-        csp_packet_t *packet;
-        while ((packet = csp_read(conn, CSP_RX_TIMEOUT)) != NULL) {
+        csp_packet_t *rx_packet;
+        while ((rx_packet = csp_read(conn, CSP_RX_TIMEOUT)) != NULL) {
             int port = csp_conn_dport(conn);
             csp_log_info("Request made to port: %d", port);
 
             switch (port) {
                 case CSP_PRIMARY_PORT:
                     /* Process packet here */
-                    if (packet != NULL) {
+                    if (rx_packet != NULL) {
+#if 0
                         csp_log_info("Packet received on MY_SERVER_PORT: ");
                         for (size_t i = 0; i < packet->length; i++) {
                             printf("%02x ", packet->data[i]);
                         }
                         printf("\n");
-                        if (!csp_send(conn, packet, 0)) {
-                            csp_buffer_free(packet);
+#endif
+
+                        csp_packet_t *tx_packet = csp_buffer_get(255);
+
+                        if (tx_packet == NULL) {
+                            /* Could not get buffer element */
+                            csp_log_error("Failed to get CSP TX buffer");
+                            assert(0);
+                        }
+
+                        tx_packet->length = process_packet(rx_packet->data, rx_packet->length, tx_packet->data);
+
+                        if (!csp_send(conn, tx_packet, 1000)) {
+                            /* Send failed */
+                            csp_log_error("Send failed");
+                            csp_buffer_free(tx_packet);
                         }
                     }
                     break;
 
                 default:
                     /* Call the default CSP service handler, handle pings, buffer use, etc. */
-                    csp_service_handler(conn, packet);
+                    csp_service_handler(conn, rx_packet);
                     break;
             }
         }
