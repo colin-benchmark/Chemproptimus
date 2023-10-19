@@ -5,6 +5,7 @@
 
 #include "config/conf_csp.h"
 #include "led/led.h"
+#include "packet_processor/packet.h"
 #include "packet_processor/packet_processor.h"
 #include "uart_csp/uart_csp.h"
 
@@ -244,7 +245,8 @@ static void uart_csp_task_server(void *pvParameters) {
                             assert(0);
                         }
 
-                        tx_packet->length = process_packet(rx_packet->data, rx_packet->length, tx_packet->data);
+                        tx_packet->length
+                            = process_packet(rx_packet->data, rx_packet->length, tx_packet->data, PACKET_BUFFER_SIZE);
 
                         if (!csp_send(conn, tx_packet, 1000)) {
                             /* Send failed */
