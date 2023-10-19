@@ -71,16 +71,13 @@ uint8_t process_packet(uint8_t *packet, uint16_t packet_len, uint8_t *tx_buffer,
             case PACKET_TYPE_WRITE_SINGLETON:
 
                 if (packet_len >= PACKET_TYPE_WRITE_SINGLETON_LENGTH_MINIMUM) {
-                    first_row = (packet[PACKET_BYTE_POS_ROW_FIRST + 1] << 8) | packet[PACKET_BYTE_POS_ROW_FIRST];
-                    last_row = (packet[PACKET_BYTE_POS_ROW_LAST + 1] << 8) | packet[PACKET_BYTE_POS_ROW_LAST];
-
                     status = component_write_single_attrb(
                         packet[PACKET_BYTE_POS_INSTANCE],
                         packet[PACKET_BYTE_POS_ATTRIBUTE],
                         0,
                         0,
                         &packet[PACKET_BYTE_WRITE_SINGLETON_DATA],
-                        packet_len - 2 /* component and attr fields */
+                        packet_len - 3 /* request, component and attr fields */
                     );
 
                 } else {
@@ -100,7 +97,7 @@ uint8_t process_packet(uint8_t *packet, uint16_t packet_len, uint8_t *tx_buffer,
                         first_row,
                         last_row,
                         &packet[PACKET_BYTE_WRITE_MULTI_ROW_DATA],
-                        packet_len - 6 /* component, attr and 4 row fields */
+                        packet_len - 7 /* request, component, attr and 4 row fields */
                     );
                 } else {
                     status = STATUS_COMMS_INCORRECT_INPUT_DATA;
