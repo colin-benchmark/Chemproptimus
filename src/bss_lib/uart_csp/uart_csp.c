@@ -243,15 +243,18 @@ static void uart_csp_task_server(void *pvParameters) {
                             /* Could not get buffer element */
                             csp_log_error("Failed to get CSP TX buffer");
                             assert(0);
-                        }
+                        } else {
+                            tx_packet->length = process_packet(
+                                rx_packet->data, rx_packet->length, tx_packet->data, PACKET_BUFFER_SIZE
+                            );
 
-                        tx_packet->length
-                            = process_packet(rx_packet->data, rx_packet->length, tx_packet->data, PACKET_BUFFER_SIZE);
+                            csp_buffer_free(rx_packet);
 
-                        if (!csp_send(conn, tx_packet, 1000)) {
-                            /* Send failed */
-                            csp_log_error("Send failed");
-                            csp_buffer_free(tx_packet);
+                            if (!csp_send(conn, tx_packet, 1000)) {
+                                /* Send failed */
+                                csp_log_error("Send failed");
+                                csp_buffer_free(tx_packet);
+                            }
                         }
                     }
                     break;
