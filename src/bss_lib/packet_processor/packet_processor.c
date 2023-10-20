@@ -111,7 +111,7 @@ uint8_t process_packet(uint8_t *packet, uint16_t packet_len, uint8_t *tx_buffer,
                         packet[PACKET_BYTE_POS_INSTANCE],
                         packet[PACKET_BYTE_POS_METHOD],
                         &packet[PACKET_BYTE_METHOD_DATA],
-                        packet_len - 2 /* component and method fields */
+                        packet_len - 3 /* request, component and method fields */
                     );
                 } else {
                     status = STATUS_COMMS_INCORRECT_INPUT_DATA;

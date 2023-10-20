@@ -239,7 +239,7 @@
                         },
                         "shots": {
                             "type": "uint16_t",
-                            "desciption": "Number of shots to fire"
+                            "description": "Number of shots to fire"
                         }
                     }
                 },
@@ -248,7 +248,7 @@
                     "parameters":{
                         "cycles": {
                             "type": "uint16_t",
-                            "desciption": "Number of cycles to fire"
+                            "description": "Number of cycles to fire"
                         }
                     }
                 }
