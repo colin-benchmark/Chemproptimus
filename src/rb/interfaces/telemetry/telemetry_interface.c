@@ -2,6 +2,7 @@
 #include "telemetry/telemetry.h"
 #include "telemetry/telemetry_attributes.h"
 #include "telemetry/telemetry_methods.h"
+#include "telemetry/telemetry_callbacks.h"
 #include "telemetry/telemetry_instance.h"
 #include "telemetry_interface.h"
 #include <stdint.h>
@@ -19,6 +20,7 @@ status_t telemetry_read_handler(
     uint8_t output_len,
     uint8_t *bytes_written
 ) {
+    status_t status = STATUS_SUCCESS;
     uint8_t bytes_to_write = 0;
 
     if (first > last) {
@@ -35,6 +37,7 @@ status_t telemetry_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows=8 read_callback= */
             memcpy(output, &telemetry_inst.temperature[first], bytes_to_write);
             break;
         
@@ -43,6 +46,7 @@ status_t telemetry_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &telemetry_inst.capacitor_voltage, bytes_to_write);
             break;
         
@@ -54,6 +58,7 @@ status_t telemetry_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows=4 read_callback= */
             memcpy(output, &telemetry_inst.shots[first], bytes_to_write);
             break;
         
@@ -62,7 +67,7 @@ status_t telemetry_read_handler(
     }
 
     *bytes_written = bytes_to_write;
-    return STATUS_SUCCESS;
+    return status;
 }
 
 status_t telemetry_write_handler(
@@ -72,6 +77,7 @@ status_t telemetry_write_handler(
     uint8_t *input,
     uint8_t input_len
 ) {
+    status_t status = STATUS_SUCCESS;
     uint8_t bytes_to_write = 0;
 
     if (first > last) {
@@ -93,7 +99,7 @@ status_t telemetry_write_handler(
             return STATUS_COMMS_INVALID_ATTRIB_ID;
     }
 
-    return STATUS_SUCCESS;
+    return status;
 }
 
 status_t telemetry_method_handler(

@@ -2,6 +2,7 @@
 #include "eeprom/eeprom.h"
 #include "eeprom/eeprom_attributes.h"
 #include "eeprom/eeprom_methods.h"
+#include "eeprom/eeprom_callbacks.h"
 #include "eeprom/eeprom_instance.h"
 #include "eeprom_interface.h"
 #include <stdint.h>
@@ -19,6 +20,7 @@ status_t eeprom_read_handler(
     uint8_t output_len,
     uint8_t *bytes_written
 ) {
+    status_t status = STATUS_SUCCESS;
     uint8_t bytes_to_write = 0;
 
     if (first > last) {
@@ -32,6 +34,7 @@ status_t eeprom_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &eeprom_inst.codework, bytes_to_write);
             break;
         
@@ -40,7 +43,7 @@ status_t eeprom_read_handler(
     }
 
     *bytes_written = bytes_to_write;
-    return STATUS_SUCCESS;
+    return status;
 }
 
 status_t eeprom_write_handler(
@@ -50,6 +53,7 @@ status_t eeprom_write_handler(
     uint8_t *input,
     uint8_t input_len
 ) {
+    status_t status = STATUS_SUCCESS;
     uint8_t bytes_to_write = 0;
 
     if (first > last) {
@@ -70,7 +74,7 @@ status_t eeprom_write_handler(
             return STATUS_COMMS_INVALID_ATTRIB_ID;
     }
 
-    return STATUS_SUCCESS;
+    return status;
 }
 
 status_t eeprom_method_handler(

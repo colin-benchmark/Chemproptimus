@@ -22,17 +22,17 @@ status_t firing_init();
  * Fire a specific thruster for a number of shots
  *
  * thruster: Thruster to fire
- * shots
+ * shots: Number of shots to fire
  *********************************************************/
 status_t firing_fire_shots(
-    uint8_t thruster,
-    uint16_t shots
+    int8_t thruster,
+    int16_t shots
 );
 
 /**********************************************************
  * Cycle through the firing pattern defined by Firing Pattern for a number of cycles
  *
- * cycles
+ * cycles: Number of cycles to fire
  *********************************************************/
 status_t firing_fire_cycles(
     uint16_t cycles

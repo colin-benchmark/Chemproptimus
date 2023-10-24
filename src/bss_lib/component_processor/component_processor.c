@@ -8,7 +8,6 @@
 static ComponentProcessor *processors;
 static uint8_t processors_len;
 
-/* TODO: Can refactor this to just */
 ComponentProcessor *getcomponent_processor(uint8_t component_id) {
     uint8_t i = 0;
     ComponentProcessor *processor = NULL;

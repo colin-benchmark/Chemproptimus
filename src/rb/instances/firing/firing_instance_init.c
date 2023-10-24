@@ -16,5 +16,6 @@ firing_attributes firing_inst = {
     .target_power = 0,
     .firing_mode = 0,
     .enabled = false,
-    .safety_override = false
+    .safety_override = false,
+    .total_isp = 0
 };

@@ -79,6 +79,9 @@
                 "recalculate_checksum": {
                     "description": "Update value in `device.checksum`"
                 },
+                "say_hello": {
+                    "description": "yo"
+                }
             }
         },
         "telemetry": {
@@ -178,23 +181,23 @@
                     "type": "uint16_t",
                     "description": "Time in ms to release charge from capacitor into an inductor, where N represents the number of thruster heads (and therefore inductors)",
                     "rows": 4,
-                    "default": [50, 50, 50, 50]
-                },
-                "inductor_charge_time": {
-                    "type": "uint16_t",
-                    "description": "Time in ms to release charge from capacitor into an inductor, where N represents the number of thruster heads (and therefore inductors)",
-                    "rows": 4,
-                    "default": [50, 50, 50, 50]
+                    "default": [50, 50, 50, 50],
+                    "write_callback": true,
+                    "read_callback": true,
                 },
                 "firing_pattern": {
                     "type": "uint8_t",
                     "description": "The order in which individual thrusters should be fired when performing a firing cycle.",
-                    "rows": 16
+                    "rows": 16,
+                    "write_callback": true,
+                    "read_callback": true,
                 },
                 "capacitor_charge_time": {
                     "type": "uint16_t",
                     "description": "Time in ms the firing capacitor should be charged for",
-                    "default": 50
+                    "default": 50,
+                    "write_callback": true,
+                    "read_callback": true,
                 },
                 "shots_remaining": {
                     "type": "uint16_t",
@@ -228,17 +231,22 @@
                     "description": "Allows for values to be written to the firing parameters which are outwith the recommended bounds",
                     "default": false
                 },
+                "total_isp": {
+                    "type": "uint16_t",
+                    "description": "Total impulse",
+                    default: 0
+                }
             },
             "methods": {
                 "fire_shots": {
                     "description": "Fire a specific thruster for a number of shots",
                     "parameters":{
                         "thruster": {
-                            "type": "uint8_t",
+                            "type": "int8_t",
                             "description": "Thruster to fire"
                         },
                         "shots": {
-                            "type": "uint16_t",
+                            "type": "int16_t",
                             "description": "Number of shots to fire"
                         }
                     }

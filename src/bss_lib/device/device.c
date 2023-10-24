@@ -8,6 +8,10 @@
 #include <stdint.h>
 #include <stdio.h>
 
+status_t device_say_hello() {
+    return STATUS_SUCCESS;
+}
+
 status_t device_print_verison() {
     printf("Xantus Version: %d.%d.%d", device_inst.version[0], device_inst.version[1], device_inst.version[2]);
     return STATUS_SUCCESS;

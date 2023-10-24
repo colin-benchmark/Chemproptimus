@@ -2,6 +2,7 @@
 #include "firing/firing.h"
 #include "firing/firing_attributes.h"
 #include "firing/firing_methods.h"
+#include "firing/firing_callbacks.h"
 #include "firing/firing_instance.h"
 #include "firing_interface.h"
 #include <stdint.h>
@@ -19,6 +20,7 @@ status_t firing_read_handler(
     uint8_t output_len,
     uint8_t *bytes_written
 ) {
+    status_t status = STATUS_SUCCESS;
     uint8_t bytes_to_write = 0;
 
     if (first > last) {
@@ -35,7 +37,8 @@ status_t firing_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
-            memcpy(output, &firing_inst.inductor_charge_time[first], bytes_to_write);
+            /* rows=4 read_callback=True */
+            status = firing_inductor_charge_time_read_callback((uint16_t *)output, first, last);
             break;
         
         case FIRING_ATTRIBUTE_FIRING_PATTERN_ID:
@@ -46,7 +49,8 @@ status_t firing_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
-            memcpy(output, &firing_inst.firing_pattern[first], bytes_to_write);
+            /* rows=16 read_callback=True */
+            status = firing_firing_pattern_read_callback((uint8_t *)output, first, last);
             break;
         
         case FIRING_ATTRIBUTE_CAPACITOR_CHARGE_TIME_ID:
@@ -54,7 +58,8 @@ status_t firing_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
-            memcpy(output, &firing_inst.capacitor_charge_time, bytes_to_write);
+            /* rows= read_callback=True */
+            status = firing_capacitor_charge_time_read_callback((uint16_t *)output);
             break;
         
         case FIRING_ATTRIBUTE_SHOTS_REMAINING_ID:
@@ -62,6 +67,7 @@ status_t firing_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &firing_inst.shots_remaining, bytes_to_write);
             break;
         
@@ -70,6 +76,7 @@ status_t firing_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &firing_inst.cycles_remaining, bytes_to_write);
             break;
         
@@ -78,6 +85,7 @@ status_t firing_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &firing_inst.target_power, bytes_to_write);
             break;
         
@@ -86,6 +94,7 @@ status_t firing_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &firing_inst.firing_mode, bytes_to_write);
             break;
         
@@ -94,6 +103,7 @@ status_t firing_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &firing_inst.enabled, bytes_to_write);
             break;
         
@@ -102,7 +112,17 @@ status_t firing_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &firing_inst.safety_override, bytes_to_write);
+            break;
+        
+        case FIRING_ATTRIBUTE_TOTAL_ISP_ID:
+            bytes_to_write = sizeof(uint16_t);
+            if (bytes_to_write > output_len) {
+                return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
+            }
+            /* rows= read_callback= */
+            memcpy(output, &firing_inst.total_isp, bytes_to_write);
             break;
         
         default:
@@ -110,7 +130,7 @@ status_t firing_read_handler(
     }
 
     *bytes_written = bytes_to_write;
-    return STATUS_SUCCESS;
+    return status;
 }
 
 status_t firing_write_handler(
@@ -120,6 +140,7 @@ status_t firing_write_handler(
     uint8_t *input,
     uint8_t input_len
 ) {
+    status_t status = STATUS_SUCCESS;
     uint8_t bytes_to_write = 0;
 
     if (first > last) {
@@ -136,7 +157,7 @@ status_t firing_write_handler(
             if (bytes_to_write != input_len) {
                 return STATUS_COMMS_INCORRECT_INPUT_DATA;
             }
-            memcpy(&firing_inst.inductor_charge_time[first], input, bytes_to_write);
+            status = firing_inductor_charge_time_write_callback((uint16_t *)input, first, last);
             break;
             
         case FIRING_ATTRIBUTE_FIRING_PATTERN_ID:
@@ -147,7 +168,7 @@ status_t firing_write_handler(
             if (bytes_to_write != input_len) {
                 return STATUS_COMMS_INCORRECT_INPUT_DATA;
             }
-            memcpy(&firing_inst.firing_pattern[first], input, bytes_to_write);
+            status = firing_firing_pattern_write_callback((uint8_t *)input, first, last);
             break;
             
         case FIRING_ATTRIBUTE_CAPACITOR_CHARGE_TIME_ID:
@@ -155,7 +176,7 @@ status_t firing_write_handler(
             if (bytes_to_write != input_len) {
                 return STATUS_COMMS_INCORRECT_INPUT_DATA;
             }
-            memcpy(&firing_inst.capacitor_charge_time, input, bytes_to_write);
+            status = firing_capacitor_charge_time_write_callback((uint16_t *)input);
             break;
             
         case FIRING_ATTRIBUTE_SHOTS_REMAINING_ID:
@@ -196,11 +217,19 @@ status_t firing_write_handler(
             memcpy(&firing_inst.safety_override, input, bytes_to_write);
             break;
             
+        case FIRING_ATTRIBUTE_TOTAL_ISP_ID:
+            bytes_to_write = sizeof(uint16_t);
+            if (bytes_to_write != input_len) {
+                return STATUS_COMMS_INCORRECT_INPUT_DATA;
+            }
+            memcpy(&firing_inst.total_isp, input, bytes_to_write);
+            break;
+            
         default:
             return STATUS_COMMS_INVALID_ATTRIB_ID;
     }
 
-    return STATUS_SUCCESS;
+    return status;
 }
 
 status_t firing_method_handler(
@@ -217,8 +246,8 @@ status_t firing_method_handler(
                 return STATUS_COMMS_INCORRECT_INPUT_DATA;
             }
             struct __attribute__((__packed__)) _firing_fire_shots_parameters {
-                uint8_t thruster;
-                uint16_t shots;
+                int8_t thruster;
+                int16_t shots;
             } firing_fire_shots_parameters;
             memcpy(&firing_fire_shots_parameters, input, input_len);
 

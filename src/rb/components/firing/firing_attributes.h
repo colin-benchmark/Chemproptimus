@@ -17,6 +17,7 @@
 #define FIRING_ATTRIBUTE_FIRING_MODE_ROWS (0)
 #define FIRING_ATTRIBUTE_ENABLED_ROWS (0)
 #define FIRING_ATTRIBUTE_SAFETY_OVERRIDE_ROWS (0)
+#define FIRING_ATTRIBUTE_TOTAL_ISP_ROWS (0)
 
 
 #define FIRING_ATTRIBUTE_INDUCTOR_CHARGE_TIME_ID (0)
@@ -28,6 +29,7 @@
 #define FIRING_ATTRIBUTE_FIRING_MODE_ID (6)
 #define FIRING_ATTRIBUTE_ENABLED_ID (7)
 #define FIRING_ATTRIBUTE_SAFETY_OVERRIDE_ID (8)
+#define FIRING_ATTRIBUTE_TOTAL_ISP_ID (9)
 
 
 typedef struct _firing_attributes {
@@ -40,6 +42,7 @@ typedef struct _firing_attributes {
     uint8_t firing_mode; /* 0 - Adaptive mode: Attempt to hit a target power by automatically adjusting the firing time of each show. 1 - Fixed mode: Use the values provided by the Firing components timing attributes. */
     bool enabled; /* This is probably wrong and needs untangled */
     bool safety_override; /* Allows for values to be written to the firing parameters which are outwith the recommended bounds */
+    uint16_t total_isp; /* Total impulse */
 } firing_attributes;
 
 

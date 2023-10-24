@@ -2,6 +2,7 @@
 #include "device/device.h"
 #include "device/device_attributes.h"
 #include "device/device_methods.h"
+#include "device/device_callbacks.h"
 #include "device/device_instance.h"
 #include "device_interface.h"
 #include <stdint.h>
@@ -19,6 +20,7 @@ status_t device_read_handler(
     uint8_t output_len,
     uint8_t *bytes_written
 ) {
+    status_t status = STATUS_SUCCESS;
     uint8_t bytes_to_write = 0;
 
     if (first > last) {
@@ -35,6 +37,7 @@ status_t device_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows=3 read_callback= */
             memcpy(output, &device_inst.version[first], bytes_to_write);
             break;
         
@@ -46,6 +49,7 @@ status_t device_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows=9 read_callback= */
             memcpy(output, &device_inst.manufacturer[first], bytes_to_write);
             break;
         
@@ -57,6 +61,7 @@ status_t device_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows=8 read_callback= */
             memcpy(output, &device_inst.serial_number[first], bytes_to_write);
             break;
         
@@ -65,6 +70,7 @@ status_t device_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &device_inst.build, bytes_to_write);
             break;
         
@@ -73,6 +79,7 @@ status_t device_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &device_inst.bootcounter, bytes_to_write);
             break;
         
@@ -81,6 +88,7 @@ status_t device_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &device_inst.status, bytes_to_write);
             break;
         
@@ -89,6 +97,7 @@ status_t device_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &device_inst.last_error, bytes_to_write);
             break;
         
@@ -97,6 +106,7 @@ status_t device_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &device_inst.log_level, bytes_to_write);
             break;
         
@@ -105,6 +115,7 @@ status_t device_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
+            /* rows= read_callback= */
             memcpy(output, &device_inst.checksum, bytes_to_write);
             break;
         
@@ -113,7 +124,7 @@ status_t device_read_handler(
     }
 
     *bytes_written = bytes_to_write;
-    return STATUS_SUCCESS;
+    return status;
 }
 
 status_t device_write_handler(
@@ -123,6 +134,7 @@ status_t device_write_handler(
     uint8_t *input,
     uint8_t input_len
 ) {
+    status_t status = STATUS_SUCCESS;
     uint8_t bytes_to_write = 0;
 
     if (first > last) {
@@ -167,7 +179,7 @@ status_t device_write_handler(
             return STATUS_COMMS_INVALID_ATTRIB_ID;
     }
 
-    return STATUS_SUCCESS;
+    return status;
 }
 
 status_t device_method_handler(
@@ -189,6 +201,10 @@ status_t device_method_handler(
             
         case DEVICE_METHOD_RECALCULATE_CHECKSUM_ID:
             status = device_recalculate_checksum();
+            break;
+            
+        case DEVICE_METHOD_SAY_HELLO_ID:
+            status = device_say_hello();
             break;
             
         default:
