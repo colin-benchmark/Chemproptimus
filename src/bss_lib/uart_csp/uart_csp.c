@@ -245,9 +245,7 @@ static void uart_csp_task_server(void *pvParameters) {
                             csp_log_error("Failed to get CSP TX buffer");
                             assert(0);
                         } else {
-                            tx_packet->length = process_packet(
-                                rx_packet->data, rx_packet->length, tx_packet->data, PACKET_BUFFER_SIZE
-                            );
+                            tx_packet->length = process_packet(rx_packet->data, rx_packet->length, tx_packet->data);
 
                             csp_buffer_free(rx_packet);
 

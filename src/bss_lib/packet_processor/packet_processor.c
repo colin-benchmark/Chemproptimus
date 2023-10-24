@@ -9,7 +9,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-uint8_t process_packet(uint8_t *packet, uint16_t packet_len, uint8_t *tx_buffer, uint8_t tx_len) {
+uint8_t process_packet(uint8_t *packet, uint16_t packet_len, uint8_t *tx_buffer) {
     uint8_t data_bytes_written = 0;
     status_t status = STATUS_SUCCESS;
     uint16_t first_row = 0;
