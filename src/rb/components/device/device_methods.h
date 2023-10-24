@@ -10,13 +10,11 @@
 #define DEVICE_METHOD_PRINT_VERISON_ID (0)
 #define DEVICE_METHOD_REBOOT_ID (1)
 #define DEVICE_METHOD_RECALCULATE_CHECKSUM_ID (2)
-#define DEVICE_METHOD_SAY_HELLO_ID (3)
 
 
 #define DEVICE_METHOD_PRINT_VERISON_PARAM_BYTES (0)
 #define DEVICE_METHOD_REBOOT_PARAM_BYTES (0)
 #define DEVICE_METHOD_RECALCULATE_CHECKSUM_PARAM_BYTES (0)
-#define DEVICE_METHOD_SAY_HELLO_PARAM_BYTES (0)
 
 /**********************************************************
  * Print device information to debug port
@@ -32,11 +30,6 @@ status_t device_reboot();
  * Update value in `device.checksum`
  *********************************************************/
 status_t device_recalculate_checksum();
-
-/**********************************************************
- * yo
- *********************************************************/
-status_t device_say_hello();
 
 
 #endif

@@ -203,10 +203,6 @@ status_t device_method_handler(
             status = device_recalculate_checksum();
             break;
             
-        case DEVICE_METHOD_SAY_HELLO_ID:
-            status = device_say_hello();
-            break;
-            
         default:
             status = STATUS_COMMS_INVALID_METHOD_ID;
     }

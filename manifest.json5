@@ -78,9 +78,6 @@
 
                 "recalculate_checksum": {
                     "description": "Update value in `device.checksum`"
-                },
-                "say_hello": {
-                    "description": "yo"
                 }
             }
         },
