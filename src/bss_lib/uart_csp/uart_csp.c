@@ -55,6 +55,7 @@ static void uart_csp_hw_configure(void) {
         /* Enable Tx */
         uart_enable_tx(UART_CSP_PORT);
     } else {
+        csp_log_error("Unable to intialised UART HW");
         /* Couldn't setup UART */
         assert(0);
     }
