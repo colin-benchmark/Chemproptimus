@@ -56,7 +56,7 @@ static void uart_csp_hw_configure(void) {
         uart_enable_tx(UART_CSP_PORT);
     } else {
         /* Couldn't setup UART */
-        /* TODO: Add assert */
+        assert(0);
     }
 }
 
@@ -106,7 +106,7 @@ static void uart_csp_buffer_push(uint8_t value) {
         uart_rx_buffer[uart_rx_head] = value;
         uart_rx_head = next_head;
     } else {
-        /* TODO: Handle buffer overflow error */
+        /* Reboot on buffer overflow error */
         csp_log_error("CSP UART Rx Buffer Full");
         exit(1);
     }
