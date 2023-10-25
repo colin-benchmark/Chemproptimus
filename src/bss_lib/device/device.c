@@ -9,12 +9,18 @@
 #include <stdio.h>
 
 status_t device_print_verison() {
-    printf("Xantus Version: %d.%d.%d", device_inst.version[0], device_inst.version[1], device_inst.version[2]);
+    printf("Xantus Version: %d.%d.%d\n\r", device_inst.version[0], device_inst.version[1], device_inst.version[2]);
     return STATUS_SUCCESS;
 }
 
 status_t device_reboot() {
-    return STATUS_NOT_IMPLEMENTED;
+    printf("<<< Reboot requested >>>\n\r");
+
+    while (1) {
+        /* nop */
+    }
+
+    return STATUS_ERROR; /* We should never reach this line */
 }
 
 status_t device_recalculate_checksum() {
