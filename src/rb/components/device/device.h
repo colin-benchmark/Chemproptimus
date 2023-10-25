@@ -31,7 +31,7 @@ status_t device_reboot();
 /**********************************************************
  * Update value in `device.checksum`
  *********************************************************/
-status_t device_recalculate_checksum();
+status_t device_calculate_checksum();
 
 
 #endif

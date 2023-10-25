@@ -1,6 +1,7 @@
 #include "component_processor/component_processor.h"
 #include "conf_board.h"
 #include "console/console.h"
+#include "device/device.h"
 #include "packet_processor/packet_processor.h"
 #include "rb/component_handlers.h"
 #include "uart_csp/uart_csp.h"
@@ -61,11 +62,11 @@ int main(void) {
 
     /* Initialize the console uart */
     console_init();
-
-    /* Setup WDT */
-    watchdog_init();
-
     printf("-- Xantus - FreeRTOS --\n\r");
+
+    /* Initialise Components */
+    watchdog_init();
+    device_init();
 
     /* Launch the BSS framework */
     component_processor_init(component_processor, sizeof(component_processor) / sizeof(component_processor[0]));

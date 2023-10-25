@@ -199,8 +199,8 @@ status_t device_method_handler(
             status = device_reboot();
             break;
             
-        case DEVICE_METHOD_RECALCULATE_CHECKSUM_ID:
-            status = device_recalculate_checksum();
+        case DEVICE_METHOD_CALCULATE_CHECKSUM_ID:
+            status = device_calculate_checksum();
             break;
             
         default:

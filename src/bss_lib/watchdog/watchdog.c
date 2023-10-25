@@ -9,6 +9,7 @@
 
 static void watchdog_task(void *pvParameters) {
     while (1) {
+        printf("X");
         wdt_restart(WDT);
         vTaskDelay(CONF_WDT_KICK / portTICK_PERIOD_MS);
     }

@@ -76,7 +76,7 @@
                     "description": "Reboot the device"
                 },
 
-                "recalculate_checksum": {
+                "calculate_checksum": {
                     "description": "Update value in `device.checksum`"
                 }
             }
