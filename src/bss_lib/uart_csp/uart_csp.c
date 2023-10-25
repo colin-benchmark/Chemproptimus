@@ -180,6 +180,9 @@ int csp_usart_write(csp_usart_fd_t fd, const void *data, size_t data_length) {
 
 static int csp_sys_reboot_uart_csp(void) {
     csp_log_info("SERVICE: Reboot requested");
+    while (1) {
+        /* nop */
+    };
 }
 
 /***********************************************************

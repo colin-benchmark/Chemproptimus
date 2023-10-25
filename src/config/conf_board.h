@@ -43,4 +43,9 @@
 /* Configure UART pins */
 #define CONF_BOARD_UART_CONSOLE
 
+/* Configure WDT */
+#define CONF_BOARD_KEEP_WATCHDOG_AT_INIT 1
+#define CONF_WDT_TIMEOUT_MS 4000
+#define CONF_WDT_KICK 1000
+
 #endif /* CONF_BOARD_H_INCLUDED */

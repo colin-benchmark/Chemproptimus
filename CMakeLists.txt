@@ -39,6 +39,7 @@ list(APPEND SOURCES
     asf/sam/drivers/tc/tc.c
     asf/sam/drivers/uart/uart.c
     asf/sam/drivers/usart/usart.c
+    asf/sam/drivers/wdt/wdt.c
     asf/sam/utils/cmsis/samv71/source/templates/gcc/startup_samv71.c
     asf/sam/utils/cmsis/samv71/source/templates/system_samv71.c
     asf/sam/utils/syscalls/gcc/syscalls.c
@@ -127,6 +128,7 @@ set(INCLUDE_DIRS
     asf/sam/drivers/tc
     asf/sam/drivers/uart
     asf/sam/drivers/usart
+    asf/sam/drivers/wdt
     asf/sam/utils
     asf/sam/utils/cmsis
     asf/sam/utils/cmsis/samv71

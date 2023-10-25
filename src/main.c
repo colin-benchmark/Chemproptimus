@@ -4,7 +4,7 @@
 #include "packet_processor/packet_processor.h"
 #include "rb/component_handlers.h"
 #include "uart_csp/uart_csp.h"
-#include <asf.h>
+#include "watchdog/watchdog.h"
 
 #define TASK_MONITOR_STACK_SIZE (2048 / sizeof(portSTACK_TYPE))
 #define TASK_MONITOR_STACK_PRIORITY (tskIDLE_PRIORITY)
@@ -61,6 +61,9 @@ int main(void) {
 
     /* Initialize the console uart */
     console_init();
+
+    /* Setup WDT */
+    watchdog_init();
 
     printf("-- Xantus - FreeRTOS --\n\r");
 
