@@ -21,8 +21,6 @@ void calculate_checksum_task(void *pvParameters) {
     uint32_t checksum = 0;
     uint32_t i = 0;
 
-    printf("Starting device checksum calculation... ");
-
     for (i = 0; i < words_to_read; i++) {
         checksum ^= program[i];
 
@@ -32,7 +30,6 @@ void calculate_checksum_task(void *pvParameters) {
     }
 
     device_inst.checksum = checksum;
-    printf("Checksum: 0x%08lx\n\n\r", checksum);
 
     vTaskDelete(NULL);
 }
@@ -54,6 +51,8 @@ status_t device_reboot() {
 
 status_t device_calculate_checksum() {
     status_t status = STATUS_SUCCESS;
+
+    printf("Calculating Device checksum\r\n");
 
     if (xTaskCreate(
             calculate_checksum_task,
