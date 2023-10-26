@@ -7,13 +7,7 @@
 #include "uart_csp/uart_csp.h"
 #include "watchdog/watchdog.h"
 
-#define TASK_MONITOR_STACK_SIZE (2048 / sizeof(portSTACK_TYPE))
-#define TASK_MONITOR_STACK_PRIORITY (tskIDLE_PRIORITY)
-#define TASK_LED_STACK_SIZE (1024 / sizeof(portSTACK_TYPE))
-#define TASK_LED_STACK_PRIORITY (tskIDLE_PRIORITY)
-
 extern void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName);
-extern void vApplicationIdleHook(void);
 extern void vApplicationTickHook(void);
 extern void vApplicationMallocFailedHook(void);
 extern void xPortSysTickHandler(void);

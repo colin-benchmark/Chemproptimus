@@ -4,6 +4,7 @@
 #include <csp/drivers/usart.h>
 
 #include "config/conf_csp.h"
+#include "config/conf_tasks.h"
 #include "led/led.h"
 #include "packet_processor/packet.h"
 #include "packet_processor/packet_processor.h"
@@ -14,9 +15,7 @@
 #define UART_BUFFER_SIZE 512
 #define PACKET_RX_PERIOD_MS (5 / portTICK_PERIOD_MS)
 #define TASK_RX_MONITOR_STACK_SIZE (512 / sizeof(portSTACK_TYPE))
-#define TASK_RX_MONITOR_STACK_PRIORITY (1 + tskIDLE_PRIORITY)
 #define TASK_CSP_SERVER_STACK_SIZE (2048 / sizeof(portSTACK_TYPE))
-#define TASK_CSP_SERVER_STACK_PRIORITY (2 + tskIDLE_PRIORITY)
 
 volatile uint8_t uart_rx_buffer[UART_BUFFER_SIZE];
 volatile uint32_t uart_rx_head = 0;
@@ -284,7 +283,7 @@ void uart_csp_init(void) {
 
     csp_log_info("Launching RX Monitor task");
     if (xTaskCreate(
-            uart_csp_task_rx, "RX Monitor", TASK_RX_MONITOR_STACK_SIZE, NULL, TASK_RX_MONITOR_STACK_PRIORITY, NULL
+            uart_csp_task_rx, "RX Monitor", TASK_RX_MONITOR_STACK_SIZE, NULL, TASK_UART_CSP_RX_MONITOR_PRIORITY, NULL
         )
         != pdPASS) {
         printf("Failed to create RX Monitor task\r\n");
@@ -292,7 +291,7 @@ void uart_csp_init(void) {
 
     csp_log_info("Launching CSP Server task");
     if (xTaskCreate(
-            uart_csp_task_server, "CSP Server", TASK_CSP_SERVER_STACK_SIZE, NULL, TASK_CSP_SERVER_STACK_PRIORITY, NULL
+            uart_csp_task_server, "CSP Server", TASK_CSP_SERVER_STACK_SIZE, NULL, TASK_UART_CSP_SERVER_PRIORITY, NULL
         )
         != pdPASS) {
         printf("Failed to create CSP Server task\r\n");

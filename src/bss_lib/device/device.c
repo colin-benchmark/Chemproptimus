@@ -1,6 +1,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+#include "config/conf_tasks.h"
 #include "device.h"
 #include "device/device_attributes.h"
 #include "device/device_instance.h"
@@ -13,7 +14,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define TASK_DEVICE_CHECKSUM_CALCULATION (tskIDLE_PRIORITY + 1)
+#define TASK_DEVICE_CHECKSUM_CALCULATION_STACK configMINIMAL_STACK_SIZE
 
 void calculate_checksum_task(void *pvParameters) {
     uint32_t *program = (uint32_t *)IFLASH_ADDR;
@@ -57,9 +58,9 @@ status_t device_calculate_checksum() {
     if (xTaskCreate(
             calculate_checksum_task,
             "Checksum Task",
-            configMINIMAL_STACK_SIZE,
+            TASK_DEVICE_CHECKSUM_CALCULATION_STACK,
             NULL,
-            TASK_DEVICE_CHECKSUM_CALCULATION,
+            TASK_DEVICE_CHECKSUM_CALCULATION_PRIORITY,
             NULL
         )
         != pdPASS) {
