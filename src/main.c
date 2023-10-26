@@ -33,12 +33,6 @@ extern void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) 
 }
 
 /**
- * \brief This function is called by FreeRTOS idle task
- */
-extern void vApplicationIdleHook(void) {
-}
-
-/**
  * \brief This function is called by FreeRTOS each tick
  */
 extern void vApplicationTickHook(void) {

@@ -78,7 +78,7 @@ static void uart_csp_lib_configure() {
     /* Add interface(s) */
     csp_iface_t *default_iface = NULL;
     csp_usart_conf_t conf = {
-        .device = NULL,
+        .device = "UART3",
         .baudrate = 115200, /* supported on all platforms */
         .databits = 8,
         .stopbits = 1,

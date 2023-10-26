@@ -13,24 +13,26 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#define TASK_DEVICE_CHECKSUM_CALCULATION (tskIDLE_PRIORITY + 1)
+
 void calculate_checksum_task(void *pvParameters) {
-    uint32_t *program = (uint32_t *)IFLASH_ADDR;  // Starting address of program memory (adjust as needed)
+    uint32_t *program = (uint32_t *)IFLASH_ADDR;
+    size_t words_to_read = IFLASH_SIZE / sizeof(uint32_t);
     uint32_t checksum = 0;
     uint32_t i = 0;
 
-    printf("Starting checksum calculation...");
+    printf("Starting device checksum calculation... ");
 
-    for (i = 0; i < IFLASH_SIZE; i++) {
+    for (i = 0; i < words_to_read; i++) {
         checksum ^= program[i];
 
-        if (!(i % 0x1000)) {
-            printf("%ld of %ld\n\r", i, IFLASH_SIZE);
-            vTaskDelay(100 / portTICK_PERIOD_MS);
+        if (!(i % 0x2000)) {
+            vTaskDelay(5 / portTICK_PERIOD_MS);
         }
     }
 
     device_inst.checksum = checksum;
-    printf(" Done\n\r");
+    printf("Checksum: 0x%08lx\n\n\r", checksum);
 
     vTaskDelete(NULL);
 }
@@ -51,12 +53,30 @@ status_t device_reboot() {
 }
 
 status_t device_calculate_checksum() {
-    xTaskCreate(calculate_checksum_task, "Checksum Task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL);
-    return STATUS_SUCCESS;
+    status_t status = STATUS_SUCCESS;
+
+    if (xTaskCreate(
+            calculate_checksum_task,
+            "Checksum Task",
+            configMINIMAL_STACK_SIZE,
+            NULL,
+            TASK_DEVICE_CHECKSUM_CALCULATION,
+            NULL
+        )
+        != pdPASS) {
+        status = STATUS_ERROR;
+        printf("Failed to create Checksum task\r\n");
+    }
+
+    return status;
 }
 
 status_t device_init() {
     status_t status = STATUS_SUCCESS;
+
+    printf("Loading Device component\n\r");
+
+    status = device_calculate_checksum();
 
     return status;
 }
