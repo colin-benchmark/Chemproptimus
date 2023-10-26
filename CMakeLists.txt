@@ -16,7 +16,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Add all .c files in the src directory to the SOURCES list
 file(GLOB SOURCES "src/*.c")
-file(GLOB BSS_LIB "src/bss_lib/**/*.c")
+file(GLOB BSS_LIB "src/lib/**/*.c")
 file(GLOB RB_LIB "src/rb/**/**/*.c")
 
 # Add additional library files
@@ -96,7 +96,7 @@ set(SOURCES ${SOURCES})
 set(INCLUDE_DIRS
     src/
     src/config
-    src/bss_lib
+    src/lib
     src/rb
     src/rb/interfaces
     src/rb/components
