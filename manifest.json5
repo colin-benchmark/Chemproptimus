@@ -75,7 +75,6 @@
                 "reboot": {
                     "description": "Reboot the device"
                 },
-
                 "calculate_checksum": {
                     "description": "Update value in `device.checksum`"
                 }
@@ -104,7 +103,7 @@
             },
             "methods": {}
         },
-        "eeprom": {
+        "nvm": {
             "description": "The device's EEPROM is used to permanently store information across its entire operational life",
             "attributes": {
                 "codework": {

@@ -253,8 +253,7 @@ uint32_t efc_get_wait_state(Efc *p_efc)
  *
  * \return 0 if successful, otherwise returns an error code.
  */
-uint32_t efc_perform_command(Efc *p_efc, uint32_t ul_command,
-		uint32_t ul_argument)
+uint32_t efc_perform_command(Efc *p_efc, uint32_t ul_command, uint32_t ul_argument)
 {
 	uint32_t result;
 	irqflags_t flags;

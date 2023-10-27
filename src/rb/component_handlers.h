@@ -1,7 +1,7 @@
 
 #include "interfaces/device/device_interface.h"
 #include "interfaces/telemetry/telemetry_interface.h"
-#include "interfaces/eeprom/eeprom_interface.h"
+#include "interfaces/nvm/nvm_interface.h"
 #include "interfaces/power/power_interface.h"
 #include "interfaces/firing/firing_interface.h"
 
@@ -24,12 +24,12 @@
         .write_handler = telemetry_write_handler, \
         .method_handler = telemetry_method_handler \
     }, \
-    /* Eeprom Component */ \
+    /* Nvm Component */ \
     { \
         .component_id = 2, \
-        .read_handler = eeprom_read_handler, \
-        .write_handler = eeprom_write_handler, \
-        .method_handler = eeprom_method_handler \
+        .read_handler = nvm_read_handler, \
+        .write_handler = nvm_write_handler, \
+        .method_handler = nvm_method_handler \
     }, \
     /* Power Component */ \
     { \

@@ -6,6 +6,7 @@
 #include "device/device_attributes.h"
 #include "device/device_instance.h"
 #include "device/device_methods.h"
+#include "nvm/nvm.h"
 #include "status.h"
 
 #include "samv71q21b.h"
