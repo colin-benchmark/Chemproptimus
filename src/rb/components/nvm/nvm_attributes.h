@@ -8,14 +8,14 @@
 #ifndef NVM_ATTRIBUTES_H
 #define NVM_ATTRIBUTES_H
 
-#define NVM_ATTRIBUTE_CODEWORK_ROWS (0)
+#define NVM_ATTRIBUTE_LENGTH_ROWS (0)
 
 
-#define NVM_ATTRIBUTE_CODEWORK_ID (0)
+#define NVM_ATTRIBUTE_LENGTH_ID (0)
 
 
 typedef struct _nvm_attributes {
-    uint32_t codework; /* When performing actions such as resetting the EEPROM a codeword is required to prevent accidental activation */
+    uint32_t length; /* Number of bytes used by NVM storage */
 } nvm_attributes;
 
 

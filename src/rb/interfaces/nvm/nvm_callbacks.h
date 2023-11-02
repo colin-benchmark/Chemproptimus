@@ -9,5 +9,6 @@
 #define NVM_CALLBACKS_H
 
 
+status_t nvm_length_read_callback(uint32_t *output);
 
 #endif

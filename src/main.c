@@ -2,6 +2,7 @@
 #include "conf_board.h"
 #include "console/console.h"
 #include "device/device.h"
+#include "nvm/nvm.h"
 #include "packet_processor/packet_processor.h"
 #include "rb/component_handlers.h"
 #include "uart_csp/uart_csp.h"
@@ -23,6 +24,7 @@ int main(void) {
     /* Initialise Components */
     watchdog_init();
     device_init();
+    nvm_init();
 
     /* Launch the BSS framework */
     component_processor_init(component_processor, sizeof(component_processor) / sizeof(component_processor[0]));

@@ -104,17 +104,25 @@
             "methods": {}
         },
         "nvm": {
-            "description": "The device's EEPROM is used to permanently store information across its entire operational life",
+            "description": "The device's Flash is used to permanently store information across its entire operational life. On boot the flash is read and a cached copy of these settings is available to the application. If this cached copy is updated then it is written back to flash.",
             "attributes": {
-                "codework": {
+                "length": {
                     "type": "uint32_t",
-                    "description": "When performing actions such as resetting the EEPROM a codeword is required to prevent accidental activation",
-                    "default": 0
+                    "description": "Number of bytes used by NVM storage",
+                    "readonly": true,
+                    "read_callback": true
+                
                 }
             },
             "methods": {
                 "reset": {
                     "description": "Reset the EEPROM to a set of known working defaults. Requires the correct Codeword to be written in the EEPROM component"
+                },
+                "write": {
+                    "description": "Write cached copy of NVM data to Flash"
+                },
+                "read": {
+                    "description": "Read NVM data in Flash to cache"
                 }
             }
         },

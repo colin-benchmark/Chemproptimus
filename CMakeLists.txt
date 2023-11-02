@@ -41,6 +41,7 @@ list(APPEND SOURCES
     asf/sam/drivers/usart/usart.c
     asf/sam/drivers/wdt/wdt.c
     asf/sam/drivers/efc/efc.c
+    asf/sam/services/flash_efc/flash_efc.c
     asf/sam/utils/cmsis/samv71/source/templates/gcc/startup_samv71.c
     asf/sam/utils/cmsis/samv71/source/templates/system_samv71.c
     asf/sam/utils/syscalls/gcc/syscalls.c
@@ -151,6 +152,7 @@ set(INCLUDE_DIRS
     asf/sam/utils/preprocessor
     asf/sam/utils/syscalls
     asf/sam/utils/syscalls/gcc
+    asf/sam/services/flash_efc/
     asf/thirdparty
     asf/thirdparty/CMSIS
     asf/thirdparty/CMSIS/Include

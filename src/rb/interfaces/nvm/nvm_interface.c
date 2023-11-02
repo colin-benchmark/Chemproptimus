@@ -29,13 +29,13 @@ status_t nvm_read_handler(
 
     switch (attribute_id) {
         
-        case NVM_ATTRIBUTE_CODEWORK_ID:
+        case NVM_ATTRIBUTE_LENGTH_ID:
             bytes_to_write = sizeof(uint32_t);
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
-            /* rows= read_callback= */
-            memcpy(output, &nvm_inst.codework, bytes_to_write);
+            /* rows= read_callback=True */
+            status = nvm_length_read_callback((uint32_t *)output);
             break;
         
         default:
@@ -62,13 +62,8 @@ status_t nvm_write_handler(
 
     switch (attribute_id) {
         
-        case NVM_ATTRIBUTE_CODEWORK_ID:
-            bytes_to_write = sizeof(uint32_t);
-            if (bytes_to_write != input_len) {
-                return STATUS_COMMS_INCORRECT_INPUT_DATA;
-            }
-            memcpy(&nvm_inst.codework, input, bytes_to_write);
-            break;
+        case NVM_ATTRIBUTE_LENGTH_ID:
+            return STATUS_COMMS_READONLY;
             
         default:
             return STATUS_COMMS_INVALID_ATTRIB_ID;
@@ -88,6 +83,14 @@ status_t nvm_method_handler(
         
         case NVM_METHOD_RESET_ID:
             status = nvm_reset();
+            break;
+            
+        case NVM_METHOD_WRITE_ID:
+            status = nvm_write();
+            break;
+            
+        case NVM_METHOD_READ_ID:
+            status = nvm_read();
             break;
             
         default:
