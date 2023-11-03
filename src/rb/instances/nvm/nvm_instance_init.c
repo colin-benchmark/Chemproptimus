@@ -8,5 +8,7 @@
  *********************************************************/
 
 nvm_attributes nvm_inst = {
-    .length = 0
+    .length = 0,
+    .valid = 0,
+    .update_required = 0
 };

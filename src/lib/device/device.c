@@ -15,6 +15,10 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "device/device_attributes.h"
+#include "device/device_instance.h"
+extern device_attributes device_inst;
+
 #define TASK_DEVICE_CHECKSUM_CALCULATION_STACK configMINIMAL_STACK_SIZE
 
 void calculate_checksum_task(void *pvParameters) {
@@ -77,6 +81,7 @@ status_t device_init() {
 
     printf("Loading Device component\n\r");
 
+    device_inst.bootcounter++;
     status = device_calculate_checksum();
 
     return status;

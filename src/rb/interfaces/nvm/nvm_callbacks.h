@@ -10,5 +10,7 @@
 
 
 status_t nvm_length_read_callback(uint32_t *output);
+status_t nvm_valid_read_callback(bool *output);
+status_t nvm_update_required_read_callback(bool *output);
 
 #endif

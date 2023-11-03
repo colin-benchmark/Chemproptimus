@@ -37,8 +37,8 @@ status_t firing_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
-            /* rows=4 read_callback=True */
-            status = firing_inductor_charge_time_read_callback((uint16_t *)output, first, last);
+            /* rows=4 read_callback= */
+            memcpy(output, &firing_inst.inductor_charge_time[first], bytes_to_write);
             break;
         
         case FIRING_ATTRIBUTE_FIRING_PATTERN_ID:
@@ -157,7 +157,7 @@ status_t firing_write_handler(
             if (bytes_to_write != input_len) {
                 return STATUS_COMMS_INCORRECT_INPUT_DATA;
             }
-            status = firing_inductor_charge_time_write_callback((uint16_t *)input, first, last);
+            memcpy(&firing_inst.inductor_charge_time[first], input, bytes_to_write);
             break;
             
         case FIRING_ATTRIBUTE_FIRING_PATTERN_ID:

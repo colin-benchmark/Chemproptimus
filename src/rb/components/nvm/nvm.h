@@ -26,12 +26,12 @@ status_t nvm_reset();
 /**********************************************************
  * Write cached copy of NVM data to Flash
  *********************************************************/
-status_t nvm_write();
+status_t nvm_store();
 
 /**********************************************************
  * Read NVM data in Flash to cache
  *********************************************************/
-status_t nvm_read();
+status_t nvm_load();
 
 
 #endif

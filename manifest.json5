@@ -42,7 +42,8 @@
                     "type": "uint16_t",
                     "description": "Number of times this device has been booted",
                     "default": 0,
-                    "readonly": true
+                    "readonly": true,
+                    "persistent": true
                 },
                 "status": {
                     "type": "uint16_t",
@@ -112,16 +113,28 @@
                     "readonly": true,
                     "read_callback": true
                 
+                },
+                "valid": {
+                    "type": "bool",
+                    "description": "Confirm the Flash has been initialised for NVM data",
+                    "readonly": true,
+                    "read_callback": true
+                },
+                "update_required": {
+                    "type": "bool",
+                    "description": "True if there's a difference between the NVM contents and component values",
+                    "readonly": true,
+                    "read_callback": true
                 }
             },
             "methods": {
                 "reset": {
                     "description": "Reset the EEPROM to a set of known working defaults. Requires the correct Codeword to be written in the EEPROM component"
                 },
-                "write": {
+                "store": {
                     "description": "Write cached copy of NVM data to Flash"
                 },
-                "read": {
+                "load": {
                     "description": "Read NVM data in Flash to cache"
                 }
             }
@@ -186,8 +199,7 @@
                     "description": "Time in ms to release charge from capacitor into an inductor, where N represents the number of thruster heads (and therefore inductors)",
                     "rows": 4,
                     "default": [50, 50, 50, 50],
-                    "write_callback": true,
-                    "read_callback": true,
+                    "persistent": true
                 },
                 "firing_pattern": {
                     "type": "uint8_t",
@@ -202,6 +214,7 @@
                     "default": 50,
                     "write_callback": true,
                     "read_callback": true,
+                    "persistent": true
                 },
                 "shots_remaining": {
                     "type": "uint16_t",
@@ -238,7 +251,8 @@
                 "total_isp": {
                     "type": "uint16_t",
                     "description": "Total impulse",
-                    default: 0
+                    "default": 0,
+                    "persistent": true
                 }
             },
             "methods": {

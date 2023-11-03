@@ -23,8 +23,8 @@ int main(void) {
 
     /* Initialise Components */
     watchdog_init();
-    device_init();
     nvm_init();
+    device_init();
 
     /* Launch the BSS framework */
     component_processor_init(component_processor, sizeof(component_processor) / sizeof(component_processor[0]));

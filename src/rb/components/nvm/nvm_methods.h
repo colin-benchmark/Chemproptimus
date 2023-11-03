@@ -8,13 +8,13 @@
  *********************************************************/
 
 #define NVM_METHOD_RESET_ID (0)
-#define NVM_METHOD_WRITE_ID (1)
-#define NVM_METHOD_READ_ID (2)
+#define NVM_METHOD_STORE_ID (1)
+#define NVM_METHOD_LOAD_ID (2)
 
 
 #define NVM_METHOD_RESET_PARAM_BYTES (0)
-#define NVM_METHOD_WRITE_PARAM_BYTES (0)
-#define NVM_METHOD_READ_PARAM_BYTES (0)
+#define NVM_METHOD_STORE_PARAM_BYTES (0)
+#define NVM_METHOD_LOAD_PARAM_BYTES (0)
 
 /**********************************************************
  * Reset the EEPROM to a set of known working defaults. Requires the correct Codeword to be written in the EEPROM component
@@ -24,12 +24,12 @@ status_t nvm_reset();
 /**********************************************************
  * Write cached copy of NVM data to Flash
  *********************************************************/
-status_t nvm_write();
+status_t nvm_store();
 
 /**********************************************************
  * Read NVM data in Flash to cache
  *********************************************************/
-status_t nvm_read();
+status_t nvm_load();
 
 
 #endif

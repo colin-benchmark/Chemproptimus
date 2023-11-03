@@ -38,6 +38,24 @@ status_t nvm_read_handler(
             status = nvm_length_read_callback((uint32_t *)output);
             break;
         
+        case NVM_ATTRIBUTE_VALID_ID:
+            bytes_to_write = sizeof(bool);
+            if (bytes_to_write > output_len) {
+                return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
+            }
+            /* rows= read_callback=True */
+            status = nvm_valid_read_callback((bool *)output);
+            break;
+        
+        case NVM_ATTRIBUTE_UPDATE_REQUIRED_ID:
+            bytes_to_write = sizeof(bool);
+            if (bytes_to_write > output_len) {
+                return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
+            }
+            /* rows= read_callback=True */
+            status = nvm_update_required_read_callback((bool *)output);
+            break;
+        
         default:
             return STATUS_COMMS_INVALID_ATTRIB_ID;
     }
@@ -65,6 +83,12 @@ status_t nvm_write_handler(
         case NVM_ATTRIBUTE_LENGTH_ID:
             return STATUS_COMMS_READONLY;
             
+        case NVM_ATTRIBUTE_VALID_ID:
+            return STATUS_COMMS_READONLY;
+            
+        case NVM_ATTRIBUTE_UPDATE_REQUIRED_ID:
+            return STATUS_COMMS_READONLY;
+            
         default:
             return STATUS_COMMS_INVALID_ATTRIB_ID;
     }
@@ -85,12 +109,12 @@ status_t nvm_method_handler(
             status = nvm_reset();
             break;
             
-        case NVM_METHOD_WRITE_ID:
-            status = nvm_write();
+        case NVM_METHOD_STORE_ID:
+            status = nvm_store();
             break;
             
-        case NVM_METHOD_READ_ID:
-            status = nvm_read();
+        case NVM_METHOD_LOAD_ID:
+            status = nvm_load();
             break;
             
         default:

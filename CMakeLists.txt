@@ -17,10 +17,11 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Add all .c files in the src directory to the SOURCES list
 file(GLOB SOURCES "src/*.c")
 file(GLOB BSS_LIB "src/lib/**/*.c")
+file(GLOB RB_LIB_ROOT "src/rb/**/*.c")
 file(GLOB RB_LIB "src/rb/**/**/*.c")
 
 # Add additional library files
-list(APPEND SOURCES ${BSS_LIB} ${RB_LIB})
+list(APPEND SOURCES ${BSS_LIB} ${RB_LIB_ROOT} ${RB_LIB})
 
 # Add additional specific source files
 list(APPEND SOURCES
@@ -103,6 +104,7 @@ set(INCLUDE_DIRS
     src/rb/interfaces
     src/rb/components
     src/rb/instances
+    src/rb/nvm
     asf
     asf/common
     asf/common/boards
