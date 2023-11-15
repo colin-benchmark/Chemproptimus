@@ -62,7 +62,7 @@ void debug_sys_set_color(log_color_t color) {
     printf("\033[%u;%um", modifier_code, color_code);
 }
 
-void do_debug(debug_level_t level, const char *format, ...) {
+void do_debug(const char *sfile, uint16_t sline, debug_level_t level, const char *format, ...) {
     int color = LOG_COLOUR_RESET;
     va_list args;
 
@@ -90,6 +90,7 @@ void do_debug(debug_level_t level, const char *format, ...) {
     va_start(args, format);
 
     debug_sys_set_color(color);
+    printf("[%s:%d] ", sfile, sline);
     vprintf(format, args);
     printf("\r\n");
     debug_sys_set_color(LOG_COLOUR_RESET);

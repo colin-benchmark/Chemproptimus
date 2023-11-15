@@ -87,50 +87,50 @@ typedef enum
  * @param level log level
  * @param format log message, printf syntax.
  */
-#define debug(level, format, ...)                     \
-    {                                                 \
-        if (LOG_ENABLED && debug_inst.enabled[level]) \
-            do_debug(level, format, ##__VA_ARGS__);   \
+#define debug(sfile, sline, level, format, ...)                   \
+    {                                                             \
+        if (LOG_ENABLED && debug_inst.enabled[level])             \
+            do_debug(sfile, sline, level, format, ##__VA_ARGS__); \
     }
 
 /**
  * Log message with level #LOG_ERROR.
  * @param format log message, printf syntax.
  */
-#define log_error(format, ...)                       \
-    {                                                \
-        if (LOG_LEVEL_ERROR)                         \
-            debug(LOG_ERROR, format, ##__VA_ARGS__); \
+#define log_error(format, ...)                                                \
+    {                                                                         \
+        if (LOG_LEVEL_ERROR)                                                  \
+            debug(__FILE_NAME__, __LINE__, LOG_ERROR, format, ##__VA_ARGS__); \
     }
 
 /**
  * Log message with level #LOG_WARN.
  * @param format log message, printf syntax.
  */
-#define log_warn(format, ...)                       \
-    {                                               \
-        if (LOG_LEVEL_WARN)                         \
-            debug(LOG_WARN, format, ##__VA_ARGS__); \
+#define log_warn(format, ...)                                                \
+    {                                                                        \
+        if (LOG_LEVEL_WARN)                                                  \
+            debug(__FILE_NAME__, __LINE__, LOG_WARN, format, ##__VA_ARGS__); \
     }
 
 /**
  * Log message with level #LOG_INFO.
  * @param format log message, printf syntax.
  */
-#define log_info(format, ...)                       \
-    {                                               \
-        if (LOG_LEVEL_INFO)                         \
-            debug(LOG_INFO, format, ##__VA_ARGS__); \
+#define log_info(format, ...)                                                \
+    {                                                                        \
+        if (LOG_LEVEL_INFO)                                                  \
+            debug(__FILE_NAME__, __LINE__, LOG_INFO, format, ##__VA_ARGS__); \
     }
 
 /**
  * Log message with level #LOG_BUFFER.
  * @param format log message, printf syntax.
  */
-#define log_debug(format, ...)                       \
-    {                                                \
-        if (LOG_LEVEL_DEBUG)                         \
-            debug(LOG_DEBUG, format, ##__VA_ARGS__); \
+#define log_debug(format, ...)                                                \
+    {                                                                         \
+        if (LOG_LEVEL_DEBUG)                                                  \
+            debug(__FILE_NAME__, __LINE__, LOG_DEBUG, format, ##__VA_ARGS__); \
     }
 
 /**
@@ -139,7 +139,8 @@ typedef enum
  * @param level log level
  * @param format log message, printf syntax.
  */
-void do_debug(debug_level_t level, const char *format, ...) __attribute__((format(__printf__, 2, 3)));
+void do_debug(const char *sfile, uint16_t sline, debug_level_t level, const char *format, ...)
+    __attribute__((format(__printf__, 4, 5)));
 
 /**
  * Toggle debug level on/off

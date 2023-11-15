@@ -22,6 +22,7 @@ set(CMAKE_SIZE arm-none-eabi-size)
 set(CMAKE_C_FLAGS_INIT "-mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16")
 set(CMAKE_CXX_FLAGS_INIT "")
 set(CMAKE_ASM_FLAGS_INIT "")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
 
 # Specify additional compiler flags (e.g., optimization, debugging, and warning flags)
 set(CMAKE_C_FLAGS_DEBUG "-O0 -g")
