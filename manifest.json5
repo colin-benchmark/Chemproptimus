@@ -81,6 +81,17 @@
                 }
             }
         },
+        "debug": {
+            "description": "Sets the level of verbosity of debug messaging available from the device.",
+            "attributes": {
+                "enabled": {
+                    "type": "bool",
+                    "rows": 3,
+                    "description": "Which debug output levels are enabled: 0 - Error, 1 - Warning, 2 - Info",
+                    "default": [true, true, true]
+                }
+            }
+        },
         "telemetry": {
             "description": "The telemetry component gives access to the various measurements taken pertaining to the operation of the device.",
             "attributes": {

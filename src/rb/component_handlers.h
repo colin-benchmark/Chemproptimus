@@ -1,5 +1,6 @@
 
 #include "interfaces/device/device_interface.h"
+#include "interfaces/debug/debug_interface.h"
 #include "interfaces/telemetry/telemetry_interface.h"
 #include "interfaces/nvm/nvm_interface.h"
 #include "interfaces/power/power_interface.h"
@@ -17,30 +18,37 @@
         .write_handler = device_write_handler, \
         .method_handler = device_method_handler \
     }, \
-    /* Telemetry Component */ \
+    /* Debug Component */ \
     { \
         .component_id = 1, \
+        .read_handler = debug_read_handler, \
+        .write_handler = debug_write_handler, \
+        .method_handler = debug_method_handler \
+    }, \
+    /* Telemetry Component */ \
+    { \
+        .component_id = 2, \
         .read_handler = telemetry_read_handler, \
         .write_handler = telemetry_write_handler, \
         .method_handler = telemetry_method_handler \
     }, \
     /* Nvm Component */ \
     { \
-        .component_id = 2, \
+        .component_id = 3, \
         .read_handler = nvm_read_handler, \
         .write_handler = nvm_write_handler, \
         .method_handler = nvm_method_handler \
     }, \
     /* Power Component */ \
     { \
-        .component_id = 3, \
+        .component_id = 4, \
         .read_handler = power_read_handler, \
         .write_handler = power_write_handler, \
         .method_handler = power_method_handler \
     }, \
     /* Firing Component */ \
     { \
-        .component_id = 4, \
+        .component_id = 5, \
         .read_handler = firing_read_handler, \
         .write_handler = firing_write_handler, \
         .method_handler = firing_method_handler \

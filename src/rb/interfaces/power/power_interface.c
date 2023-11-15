@@ -142,6 +142,7 @@ status_t power_method_handler(
 ) {
     status_t status = STATUS_ERROR;
 
+    
     switch (method_id) {
         
         case POWER_METHOD_SET_PPU_ID:
@@ -175,6 +176,7 @@ status_t power_method_handler(
         default:
             status = STATUS_COMMS_INVALID_METHOD_ID;
     }
+    
 
     return status;
 }

@@ -103,6 +103,7 @@ status_t nvm_method_handler(
 ) {
     status_t status = STATUS_ERROR;
 
+    
     switch (method_id) {
         
         case NVM_METHOD_RESET_ID:
@@ -120,6 +121,7 @@ status_t nvm_method_handler(
         default:
             status = STATUS_COMMS_INVALID_METHOD_ID;
     }
+    
 
     return status;
 }

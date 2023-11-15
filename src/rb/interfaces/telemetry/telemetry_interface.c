@@ -109,11 +109,7 @@ status_t telemetry_method_handler(
 ) {
     status_t status = STATUS_ERROR;
 
-    switch (method_id) {
-        
-        default:
-            status = STATUS_COMMS_INVALID_METHOD_ID;
-    }
+    
 
     return status;
 }
