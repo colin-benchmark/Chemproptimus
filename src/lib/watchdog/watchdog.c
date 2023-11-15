@@ -5,6 +5,8 @@
 #include <asf/sam/drivers/wdt/wdt.h>
 #include <stdio.h>
 
+#include "debug/debug.h"
+
 extern void vApplicationIdleHook(void) {
     wdt_restart(WDT);
 }
@@ -13,7 +15,7 @@ void watchdog_init() {
     uint32_t wdt_mode;
     uint32_t timeout_value;
 
-    printf("Loading Watchdog component\n\r");
+    log_info("Loading Watchdog component\n\r");
 
     /* Enable the watchdog peripheral clock */
     pmc_enable_periph_clk(ID_WDT);
@@ -27,5 +29,5 @@ void watchdog_init() {
     wdt_init(WDT, wdt_mode, timeout_value, timeout_value);
 
     int32_t timeout_period = (int)wdt_get_us_timeout_period(WDT, BOARD_FREQ_SLCK_XTAL);
-    printf("Enabled watchdog with %ld microseconds period\n\r", timeout_period);
+    log_info("Enabled watchdog with %ld microseconds period\n\r", timeout_period);
 }

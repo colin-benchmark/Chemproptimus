@@ -8,6 +8,8 @@
 #include "nvm/nvm_cache.h"
 #include "nvm/nvm_struct.h"
 
+#include "debug/debug.h"
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
@@ -27,7 +29,7 @@ status_t nvm_to_cache(nvm_cache_t *cache) {
         memcpy(buf, nvm_page, 2 + sizeof(nvm_cache_t));
         memcpy(cache, &buf[NVM_DATA_OFFSET], sizeof(nvm_cache_t));
     } else {
-        printf("Flash page too small for persistent data");
+        log_warn("Flash page too small for persistent data");
         status = STATUS_ERROR;
     }
 
@@ -78,19 +80,19 @@ status_t nvm_init() {
     status_t status = STATUS_SUCCESS;
     uint32_t ul_rc;
 
-    printf("Initializing NVM component\b\r");
+    log_info("Initializing NVM component\b\r");
 
     /* Initialize flash: 6 wait states for flash writing. */
     ul_rc = flash_init(FLASH_ACCESS_MODE_128, 6);
 
     if (ul_rc != FLASH_RC_OK) {
-        printf("Flash initialization error %lu\n\r", ul_rc);
+        log_warn("Flash initialization error %lu\n\r", ul_rc);
         status = STATUS_ERROR;
     }
 
     if (!nvm_valid()) {
-        printf("Flash NVM region does not contain valid data. Please run nvm.reset() "
-               "to clear and initialise the NVM region");
+        log_warn("Flash NVM region does not contain valid data. Please run nvm.reset() "
+                 "to clear and initialise the NVM region");
         status = STATUS_ERROR;
     } else {
         status = nvm_load();
@@ -98,7 +100,7 @@ status_t nvm_init() {
 
     if (xTaskCreate(nvm_store_task, "CSP Server", TASK_NVM_STORE_STACK_SIZE, NULL, TASK_NVM_STORE_PRIORITY, NULL)
         != pdPASS) {
-        printf("Failed to create NVM Store task\r\n");
+        log_warn("Failed to create NVM Store task\r\n");
     }
 
     return status;
@@ -112,14 +114,14 @@ status_t nvm_write(const void *data, size_t len) {
     uint32_t ul_page_buffer[IFLASH_PAGE_SIZE / sizeof(uint32_t)] = { 0 };
 
     if ((len + 2) > IFLASH_PAGE_SIZE) {
-        printf("Flash page too small for persistent data");
+        log_warn("Flash page too small for persistent data");
         status = STATUS_ERROR;
     }
 
     if (status == STATUS_SUCCESS) {
         ul_rc = flash_unlock(ul_test_page_addr, ul_test_page_addr + IFLASH_PAGE_SIZE - 1, 0, 0);
         if (ul_rc != FLASH_RC_OK) {
-            printf("Flash Unlock error %lu\n\r", ul_rc);
+            log_warn("Flash Unlock error %lu\n\r", ul_rc);
             status = STATUS_ERROR;
         }
     }
@@ -130,7 +132,7 @@ status_t nvm_write(const void *data, size_t len) {
 	     */
         ul_rc = flash_erase_sector(ul_test_page_addr);
         if (ul_rc != FLASH_RC_OK) {
-            printf("Flash erase error %lu\n\r", ul_rc);
+            log_warn("Flash erase error %lu\n\r", ul_rc);
             status = STATUS_ERROR;
         }
 
@@ -141,7 +143,7 @@ status_t nvm_write(const void *data, size_t len) {
             ul_rc = flash_write(ul_test_page_addr, ul_page_buffer, len + 2, 0);
 
             if (ul_rc != FLASH_RC_OK) {
-                printf("Flash programming error %lu\n\r", ul_rc);
+                log_warn("Flash programming error %lu\n\r", ul_rc);
                 status = STATUS_ERROR;
             }
         }
@@ -150,7 +152,7 @@ status_t nvm_write(const void *data, size_t len) {
     if (status == STATUS_SUCCESS) {
         ul_rc = flash_lock(ul_test_page_addr, ul_test_page_addr + IFLASH_PAGE_SIZE - 1, 0, 0);
         if (ul_rc != FLASH_RC_OK) {
-            printf("Flash locking error %lu\n\r", ul_rc);
+            log_warn("Flash locking error %lu\n\r", ul_rc);
             status = STATUS_ERROR;
         }
     }
@@ -159,7 +161,7 @@ status_t nvm_write(const void *data, size_t len) {
 status_t nvm_store() {
     status_t status = STATUS_SUCCESS;
 
-    printf("Flash: Store\n\r");
+    log_info("Flash: Store\n\r");
 
     nvm_cache_t cache;
 
@@ -167,7 +169,7 @@ status_t nvm_store() {
         nvm_instance_to_cache(&cache);
         nvm_write(&cache, sizeof(nvm_cache_t));
     } else {
-        printf("Flash page too small for persistent data");
+        log_warn("Flash page too small for persistent data");
         status = STATUS_ERROR;
     }
 
@@ -179,7 +181,7 @@ status_t nvm_load() {
     uint32_t *nvm_page = (uint32_t *)NVM_PAGE_ADDRESS;
     nvm_cache_t cache;
 
-    printf("Flash: Load\n\r");
+    log_info("Flash: Load\n\r");
     status = nvm_to_cache(&cache);
 
     if (status == STATUS_SUCCESS) {
@@ -195,18 +197,18 @@ status_t nvm_reset() {
     uint32_t ul_test_page_addr = NVM_PAGE_ADDRESS;
     uint32_t buf[2 + sizeof(nvm_cache_t)] = { 0 };
 
-    printf("Flash: Reset\n\r");
+    log_info("Flash: Reset\n\r");
 
     ul_rc = flash_unlock(ul_test_page_addr, ul_test_page_addr + IFLASH_PAGE_SIZE - 1, 0, 0);
     if (ul_rc != FLASH_RC_OK) {
-        printf("Flash Unlock error %lu\n\r", ul_rc);
+        log_warn("Flash Unlock error %lu\n\r", ul_rc);
         status = STATUS_ERROR;
     }
 
     if (status == STATUS_SUCCESS) {
         ul_rc = flash_erase_sector(ul_test_page_addr);
         if (ul_rc != FLASH_RC_OK) {
-            printf("Flash erase error %lu\n\r", ul_rc);
+            log_warn("Flash erase error %lu\n\r", ul_rc);
             status = STATUS_ERROR;
         }
     }

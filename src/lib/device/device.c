@@ -2,6 +2,7 @@
 #include "task.h"
 
 #include "config/conf_tasks.h"
+#include "debug/debug.h"
 #include "device.h"
 #include "device/device_attributes.h"
 #include "device/device_instance.h"
@@ -46,7 +47,7 @@ status_t device_print_verison() {
 }
 
 status_t device_reboot() {
-    printf("<<< Reboot requested >>>\n\r");
+    log_info("<<< Reboot requested >>>\n\r");
 
     while (1) {
         /* nop */
@@ -58,7 +59,7 @@ status_t device_reboot() {
 status_t device_calculate_checksum() {
     status_t status = STATUS_SUCCESS;
 
-    printf("Calculating Device checksum\r\n");
+    log_info("Calculating Device checksum\r\n");
 
     if (xTaskCreate(
             calculate_checksum_task,
@@ -70,7 +71,7 @@ status_t device_calculate_checksum() {
         )
         != pdPASS) {
         status = STATUS_ERROR;
-        printf("Failed to create Checksum task\r\n");
+        log_warn("Failed to create Checksum task\r\n");
     }
 
     return status;
@@ -79,7 +80,7 @@ status_t device_calculate_checksum() {
 status_t device_init() {
     status_t status = STATUS_SUCCESS;
 
-    printf("Loading Device component\n\r");
+    log_info("Loading Device component\n\r");
 
     device_inst.bootcounter++;
     status = device_calculate_checksum();

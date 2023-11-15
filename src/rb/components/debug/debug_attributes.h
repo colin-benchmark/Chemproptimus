@@ -8,14 +8,14 @@
 #ifndef DEBUG_ATTRIBUTES_H
 #define DEBUG_ATTRIBUTES_H
 
-#define DEBUG_ATTRIBUTE_ENABLED_ROWS (3)
+#define DEBUG_ATTRIBUTE_ENABLED_ROWS (4)
 
 
 #define DEBUG_ATTRIBUTE_ENABLED_ID (0)
 
 
 typedef struct _debug_attributes {
-    bool enabled[DEBUG_ATTRIBUTE_ENABLED_ROWS]; /* Which debug output levels are enabled: 0 - Error, 1 - Warning, 2 - Info */
+    bool enabled[DEBUG_ATTRIBUTE_ENABLED_ROWS]; /* Which debug output levels are enabled: 0 - Error, 1 - Warning, 2 - Info, 3 - Debug */
 } debug_attributes;
 
 

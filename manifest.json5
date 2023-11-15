@@ -86,9 +86,9 @@
             "attributes": {
                 "enabled": {
                     "type": "bool",
-                    "rows": 3,
-                    "description": "Which debug output levels are enabled: 0 - Error, 1 - Warning, 2 - Info",
-                    "default": [true, true, true]
+                    "rows": 4,
+                    "description": "Which debug output levels are enabled: 0 - Error, 1 - Warning, 2 - Info, 3 - Debug",
+                    "default": [true, true, true, true]
                 }
             }
         },

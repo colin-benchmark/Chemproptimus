@@ -37,7 +37,7 @@ status_t debug_read_handler(
             if (bytes_to_write > output_len) {
                 return STATUS_COMMS_INSUFFICIENT_BUFFER_SPACE;
             }
-            /* rows=3 read_callback= */
+            /* rows=4 read_callback= */
             memcpy(output, &debug_inst.enabled[first], bytes_to_write);
             break;
         
