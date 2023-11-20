@@ -12,8 +12,6 @@ add_compile_definitions(
     CSP_FREERTOS
 )
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
 # Add all .c files in the src directory to the SOURCES list
 file(GLOB SOURCES "src/*.c")
 file(GLOB BSS_LIB "src/lib/**/*.c")
@@ -97,6 +95,7 @@ set(SOURCES ${SOURCES})
 
 # Include directories
 set(INCLUDE_DIRS
+    /
     src/
     src/config
     src/lib
@@ -105,7 +104,7 @@ set(INCLUDE_DIRS
     src/rb/components
     src/rb/instances
     src/rb/nvm
-    asf
+    asf/
     asf/common
     asf/common/boards
     asf/common/services
