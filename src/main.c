@@ -19,7 +19,7 @@ int main(void) {
 
     /* Initialize the console uart */
     console_init();
-    printf("-- Xantus - FreeRTOS --\n\r");
+    printf("-- Chemproptimus --\n\r");
 
     /* Initialise Components */
     watchdog_init();

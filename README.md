@@ -27,3 +27,8 @@
 # Ninja
     cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=toolchain-arm-gcc.cmake -GNinja
     cmake --build build
+
+# Errors when building
+
+## Error: selected processor does not support `isb ' in ARM mode
+Set `project(Generic)` in `CMakeList.txt` and then build (sometimes followed by a clean rebuild) and it'll build. Set `project` back to `Xantus` and it will build properly. 

@@ -10,8 +10,8 @@
  * developer as part of their own codebase
  *********************************************************/
 
-#ifndef TELEMETRY_H
-#define TELEMETRY_H
+#ifndef TELEMETRY_COMPONENT_H
+#define TELEMETRY_COMPONENT_H
 
 /**********************************************************
  * Initialise the telemetry component

@@ -1,8 +1,8 @@
 {
-    "name": "Xantus",
+    "name": "Chemproptimus",
     "config": {
         "comms": {
-            "address": 0x10,
+            "address": 0x20,
             "port": 0x0A
         }
     },
@@ -149,147 +149,6 @@
                     "description": "Read NVM data in Flash to cache"
                 }
             }
-        },
-        "power": {
-            "description": "The Buck Boost circuitry charges up the voltage across a large capacitor which will be released to the necessary firing heads when required",
-            "attributes": {
-                "ppu_status": {
-                    "type": "bool",
-                    "description": "Is the PPU currently enabled?",
-                    "readonly": true,
-                    "default": false
-                },
-                "ppu_frequency": {
-                    "type": "uint16_t",
-                    "description": "Frequency of PWM controlled Buck Boost (Hz)",
-                    "default": 1000
-                },
-                "ppu_duty_cycle": {
-                    "type": "uint8_t",
-                    "description": "Duty cycle of PWM controlled Buck Boost (%)",
-                    "default": 50
-                },
-                "buckboost_status": {
-                    "type": "bool",
-                    "description": "Is the Buck-Boost currently enabled?",
-                    "readonly": true,
-                    "default": false
-                },
-                "current_limit": {
-                    "type": "uint8_t",
-                    "description": "Sets the inrush settings which is used to control the firing power",
-                    "default": 0
-                },
-            },
-            "methods": {
-                "set_ppu": {
-                    "description": "Enable or disbale the PPU",
-                    "parameters":{
-                        "enabled": {
-                            "type": "bool",
-                            "description": "False - Disable PPU, True - Enable PPU"
-                        },
-                    }
-                },
-                "set_buckboost": {
-                    "description": "Enable or disbale the Buck Boost",
-                    "parameters":{
-                        "enabled": {
-                            "type": "bool",
-                            "description": "False - Disable PPU, True - Enable PPU"
-                        },
-                    }
-                },
-            }
-        },
-        "firing": {
-            "description": "The firing component controls the state-machines which control the thrusters firing mechanisms.",
-            "attributes": {
-                "inductor_charge_time": {
-                    "type": "uint16_t",
-                    "description": "Time in ms to release charge from capacitor into an inductor, where N represents the number of thruster heads (and therefore inductors)",
-                    "rows": 4,
-                    "default": [50, 50, 50, 50],
-                    "persistent": true
-                },
-                "firing_pattern": {
-                    "type": "uint8_t",
-                    "description": "The order in which individual thrusters should be fired when performing a firing cycle.",
-                    "rows": 16,
-                    "write_callback": true,
-                    "read_callback": true,
-                },
-                "capacitor_charge_time": {
-                    "type": "uint16_t",
-                    "description": "Time in ms the firing capacitor should be charged for",
-                    "default": 50,
-                    "write_callback": true,
-                    "read_callback": true,
-                    "persistent": true
-                },
-                "shots_remaining": {
-                    "type": "uint16_t",
-                    "description": "Number of shots remaining when in shot-firing mode",
-                    "default": 0,
-                    "readonly": true
-                },
-                "cycles_remaining": {
-                    "type": "uint16_t",
-                    "description": "Number of cycles remaining when in cycle-firing mode",
-                    "default": 0,
-                    "readonly": true
-                },
-                "target_power": {
-                    "type": "uint16_t",
-                    "description": "When in adaptive-mode attempt to consistently fire at this target power",
-                    "default": 0,
-                },
-                "firing_mode": {
-                    "type": "uint8_t",
-                    "description": "0 - Adaptive mode: Attempt to hit a target power by automatically adjusting the firing time of each show. 1 - Fixed mode: Use the values provided by the Firing components timing attributes.",
-                    "default": 0
-                },
-                "enabled": {
-                    "type": "bool",
-                    "description": "This is probably wrong and needs untangled",
-                    "default": false
-                },
-                "safety_override": {
-                    "type": "bool",
-                    "description": "Allows for values to be written to the firing parameters which are outwith the recommended bounds",
-                    "default": false
-                },
-                "total_isp": {
-                    "type": "uint16_t",
-                    "description": "Total impulse",
-                    "default": 0,
-                    "persistent": true
-                }
-            },
-            "methods": {
-                "fire_shots": {
-                    "description": "Fire a specific thruster for a number of shots",
-                    "parameters":{
-                        "thruster": {
-                            "type": "int8_t",
-                            "description": "Thruster to fire"
-                        },
-                        "shots": {
-                            "type": "int16_t",
-                            "description": "Number of shots to fire"
-                        }
-                    }
-                },
-                "fire_cycles": {
-                    "description": "Cycle through the firing pattern defined by Firing Pattern for a number of cycles",
-                    "parameters":{
-                        "cycles": {
-                            "type": "uint16_t",
-                            "description": "Number of cycles to fire"
-                        }
-                    }
-                }
-            },
         },
     }
 }

@@ -10,8 +10,8 @@
  * developer as part of their own codebase
  *********************************************************/
 
-#ifndef DEBUG_H
-#define DEBUG_H
+#ifndef DEBUG_COMPONENT_H
+#define DEBUG_COMPONENT_H
 
 /**********************************************************
  * Initialise the debug component

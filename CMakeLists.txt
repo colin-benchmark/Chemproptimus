@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
-project(Xantus)
+project(Generic)
 
 # Set compiler and linker options
 add_compile_definitions(

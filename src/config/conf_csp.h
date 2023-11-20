@@ -1,7 +1,7 @@
 #ifndef CONF_CSP_H_
 #define CONF_CSP_H_
 
-#define CSP_ADDRESS 0x10
+#define CSP_ADDRESS 0x20
 #define CSP_PRIMARY_PORT 0x0A
 
 #define CSP_FREERTOS 1

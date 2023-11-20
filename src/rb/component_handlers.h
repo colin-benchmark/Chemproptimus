@@ -3,8 +3,6 @@
 #include "interfaces/debug/debug_interface.h"
 #include "interfaces/telemetry/telemetry_interface.h"
 #include "interfaces/nvm/nvm_interface.h"
-#include "interfaces/power/power_interface.h"
-#include "interfaces/firing/firing_interface.h"
 
 
 #ifndef COMPONENT_HANDLERS_H
@@ -38,20 +36,6 @@
         .read_handler = nvm_read_handler, \
         .write_handler = nvm_write_handler, \
         .method_handler = nvm_method_handler \
-    }, \
-    /* Power Component */ \
-    { \
-        .component_id = 4, \
-        .read_handler = power_read_handler, \
-        .write_handler = power_write_handler, \
-        .method_handler = power_method_handler \
-    }, \
-    /* Firing Component */ \
-    { \
-        .component_id = 5, \
-        .read_handler = firing_read_handler, \
-        .write_handler = firing_write_handler, \
-        .method_handler = firing_method_handler \
     } \
 };
 
