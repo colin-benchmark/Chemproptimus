@@ -189,4 +189,5 @@ link_directories(${CMAKE_SOURCE_DIR}/samv71b/gcc/gcc)
 # Create the executable
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+# Force __FILE__ to give relative paths
 target_compile_options(${PROJECT_NAME} PRIVATE -ffile-prefix-map=${CMAKE_SOURCE_DIR}=.)

@@ -7,6 +7,8 @@
 
 #include "debug/debug_instance.h"
 
+static const char *LOG_LEVELS[] = { "ERROR", "WARN", "INFO", "DEBUG" };
+
 void debug_sys_set_color(log_color_t color) {
     unsigned int color_code, modifier_code;
     switch (color & LOG_COLOUR_MASK_COLOR) {
@@ -64,6 +66,8 @@ void debug_sys_set_color(log_color_t color) {
 
 void do_debug(const char *sfile, uint16_t sline, debug_level_t level, const char *format, ...) {
     int color = LOG_COLOUR_RESET;
+    const char *log_level = NULL;
+
     va_list args;
 
     /* Don't print anything if log level is disabled */
@@ -72,15 +76,19 @@ void do_debug(const char *sfile, uint16_t sline, debug_level_t level, const char
 
     switch (level) {
         case LOG_INFO:
+            log_level = LOG_LEVELS[LOG_INFO];
             color = LOG_COLOUR_GREEN | LOG_COLOUR_BOLD;
             break;
         case LOG_ERROR:
+            log_level = LOG_LEVELS[LOG_ERROR];
             color = LOG_COLOUR_RED | LOG_COLOUR_BOLD;
             break;
         case LOG_WARN:
+            log_level = LOG_LEVELS[LOG_WARN];
             color = LOG_COLOUR_YELLOW | LOG_COLOUR_BOLD;
             break;
         case LOG_DEBUG:
+            log_level = LOG_LEVELS[LOG_DEBUG];
             color = LOG_COLOUR_CYAN;
             break;
         default:
@@ -90,6 +98,9 @@ void do_debug(const char *sfile, uint16_t sline, debug_level_t level, const char
     va_start(args, format);
 
     debug_sys_set_color(color);
+    if (log_level != NULL) {
+        printf("%s ", log_level);
+    }
     printf("[%s:%d] ", sfile, sline);
     vprintf(format, args);
     printf("\r\n");
