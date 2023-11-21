@@ -1,5 +1,5 @@
 #include "status.h"
-#include "telemetry/telemetry.h"
+#include "telemetry/telemetry_component.h"
 #include "telemetry/telemetry_attributes.h"
 #include "telemetry/telemetry_methods.h"
 #include "telemetry/telemetry_callbacks.h"

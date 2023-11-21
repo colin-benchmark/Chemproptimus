@@ -1,5 +1,5 @@
 #include "status.h"
-#include "nvm/nvm.h"
+#include "nvm/nvm_component.h"
 #include "nvm/nvm_attributes.h"
 #include "nvm/nvm_methods.h"
 #include "nvm/nvm_callbacks.h"

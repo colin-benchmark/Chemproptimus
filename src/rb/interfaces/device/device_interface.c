@@ -1,5 +1,5 @@
 #include "status.h"
-#include "device/device.h"
+#include "device/device_component.h"
 #include "device/device_attributes.h"
 #include "device/device_methods.h"
 #include "device/device_callbacks.h"

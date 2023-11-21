@@ -1,5 +1,5 @@
 #include "status.h"
-#include "debug/debug.h"
+#include "debug/debug_component.h"
 #include "debug/debug_attributes.h"
 #include "debug/debug_methods.h"
 #include "debug/debug_callbacks.h"
